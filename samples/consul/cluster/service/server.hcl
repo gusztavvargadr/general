@@ -10,3 +10,7 @@ tls {
     key_file  = "/etc/consul.d/certs/local-server-consul-0-key.pem"
   }
 }
+
+connect {
+  enabled = true
+}

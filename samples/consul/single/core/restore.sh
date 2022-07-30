@@ -14,10 +14,3 @@ sudo apt install consul=$CONSUL_VERSION-1 -y
 sudo apt install jq net-tools -y
 
 docker pull library/consul:$CONSUL_VERSION
-
-export ENVOY_VERSION=1.22.0
-
-curl -L https://func-e.io/install.sh | sudo bash -s -- -b /usr/local/bin
-func-e use $ENVOY_VERSION
-sudo cp ~/.func-e/versions/$ENVOY_VERSION/bin/envoy /usr/local/bin/
-envoy --version

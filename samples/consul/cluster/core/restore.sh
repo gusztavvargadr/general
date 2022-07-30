@@ -3,7 +3,7 @@
 set -o errexit
 set -o nounset
 
-export CONSUL_VERSION=1.12.1
+export CONSUL_VERSION=1.12.3
 
 export DEBIAN_FRONTEND=noninteractive
 

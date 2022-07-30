@@ -3,7 +3,7 @@
 set -o errexit
 set -o nounset
 
-export VAULT_VERSION=1.10.3
+export VAULT_VERSION=1.11.1
 
 export DEBIAN_FRONTEND=noninteractive
 

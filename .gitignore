@@ -1,2 +1,6 @@
 .vagrant
 tmp
+
+.terraform*
+terraform.tfstate*
+.ssh

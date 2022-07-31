@@ -2,12 +2,14 @@
 
 set -e
 
-sudo apt update -qq
-sudo apt install -qq -y apt-transport-https
+apt update -qq
+apt install -qq -y apt-transport-https
 
+pushd /tmp
 wget -qO - https://packages.chef.io/chef.asc | sudo apt-key add -
 echo "deb https://packages.chef.io/repos/apt/stable $(lsb_release -cs) main" > chef.list
-sudo mv chef.list /etc/apt/sources.list.d/
-sudo apt update -qq
+mv chef.list /etc/apt/sources.list.d/
+apt update -qq
+popd
 
-sudo apt install -qq -y chef
+apt install -qq -y chef

@@ -2,6 +2,8 @@ locals {
   default_instance_name = local.default_component_name
   default_instance_type = "t3.micro"
   default_instance_user = "ubuntu"
+  default_instance_user_data_filename = "${path.module}/instance_user_data.sh"
+  default_instance_provision_filename = "${path.module}/instance_provision.sh"
 }
 
 resource "aws_instance" "default" {
@@ -10,6 +12,7 @@ resource "aws_instance" "default" {
   subnet_id = local.public_subnet_ids[0]
   vpc_security_group_ids = [ local.default_security_group_id ]
   key_name = local.default_key_name
+  user_data = file(local.default_instance_user_data_filename)
 
   tags = {
     Name = local.default_instance_name
@@ -27,7 +30,7 @@ resource "aws_instance" "default" {
   }
 
   provisioner "remote-exec" {
-    script = "${path.module}/provision.sh"
+    script = local.default_instance_provision_filename
   }
 }
 

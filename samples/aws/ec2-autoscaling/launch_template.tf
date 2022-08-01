@@ -1,6 +1,6 @@
 locals {
   default_launch_template_name = local.default_component_name
-  default_launch_template_instance_type = "t3.micro"
+  default_launch_template_instance_type = "t3.nano"
   default_launch_tempalte_user_data_filename = "${path.module}/launch_template_user_data.sh"
 }
 

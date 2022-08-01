@@ -1,6 +1,6 @@
 locals {
   default_instance_name = local.default_component_name
-  default_instance_type = "t3.micro"
+  default_instance_type = "t3.nano"
   default_instance_user = "ubuntu"
   default_instance_user_data_filename = "${path.module}/instance_user_data.sh"
   default_instance_provision_filename = "${path.module}/instance_provision.sh"

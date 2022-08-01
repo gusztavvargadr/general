@@ -5,12 +5,12 @@ variable "stack" {
 
 variable "service" {
   type    = string
-  default = "aws"
+  default = "aws-ec2"
 }
 
 variable "component" {
   type = string
-  default = "ec2-autoscaling"
+  default = "autoscaling"
 }
 
 variable "environment" {

@@ -12,14 +12,14 @@ resource "aws_launch_template" "default" {
   vpc_security_group_ids = [ local.default_security_group_id ]
   user_data = filebase64(local.default_launch_tempalte_user_data_filename)
 
-  tags = {
-    Name = local.default_launch_template_name
-  }
-
   update_default_version = true
 
-  instance_market_options {
-    market_type = "spot"
+  # instance_market_options {
+  #   market_type = "spot"
+  # }
+
+  tags = {
+    Name = local.default_launch_template_name
   }
 
   tag_specifications {

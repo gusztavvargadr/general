@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  server:
+    build:
+      context: ./server/
+      dockerfile: ./Dockerfile
+      args:
+        VAULT_IMAGE_NAME:
+        VAULT_VERSION:
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - server:/vault/file/
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+
+  init:
+    build:
+      context: ./init/
+      dockerfile: ./Dockerfile
+      args:
+        UBUNTU_IMAGE_NAME:
+        UBUNTU_VERSION:
+        VAULT_VERSION:
+    volumes:
+      - init:/vault/init/
+    environment:
+      VAULT_ADDR: http://server:${SERVER_PORT}
+
+  cli:
+    build:
+      context: ./cli/
+      dockerfile: ./Dockerfile
+      args:
+        VAULT_IMAGE_NAME:
+        VAULT_VERSION:
+    volumes:
+      - init:/vault/init/
+    environment:
+      VAULT_ADDR: http://server:${SERVER_PORT}
+
+  export:
+    build:
+      context: ./export/
+      dockerfile: ./Dockerfile
+      args:
+        VAULT_IMAGE_NAME:
+        VAULT_VERSION:
+    volumes:
+      - init:/vault/init/
+      - ./artifacts/:/vault/artifacts/
+    environment:
+      VAULT_ADDR: http://localhost:${SERVER_PORT}
+
+volumes:
+  server:
+  init:

@@ -3,8 +3,11 @@
 set -o errexit
 set -o nounset
 
-eval `bash ./env.sh`
+cd `dirname $0`
 
+source ./artifacts/env.sh
+
+vault secrets list
 vault secrets enable -path=kv kv
 
 vault kv put kv/hello target=world

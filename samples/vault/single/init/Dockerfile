@@ -1,0 +1,17 @@
+ARG UBUNTU_IMAGE_NAME
+ARG UBUNTU_VERSION
+
+FROM ${UBUNTU_IMAGE_NAME}:${UBUNTU_VERSION}
+
+ARG VAULT_VERSION
+
+WORKDIR /vault/build/
+
+ADD ./build.sh ./
+RUN sh ./build.sh ${VAULT_VERSION}
+
+ADD ./ ./
+
+WORKDIR /
+
+ENTRYPOINT [ "sh", "/vault/build/run.sh" ]

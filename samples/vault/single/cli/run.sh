@@ -1,8 +1,9 @@
 #!/usr/bin/env sh
 
-set -o errexit
-set -o nounset
+set -eux
 
-source /vault/init/env.sh
+cd $VAULT_CLI_PATH
+
+source ./env.sh
 
 vault $*

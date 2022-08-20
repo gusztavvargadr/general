@@ -5,13 +5,11 @@ FROM ${UBUNTU_IMAGE_NAME}:${UBUNTU_VERSION}
 
 ARG VAULT_VERSION
 
-WORKDIR /vault/build/
+WORKDIR /tmp/vault/init/
 
 ADD ./build.sh ./
 RUN sh ./build.sh ${VAULT_VERSION}
 
 ADD ./ ./
 
-WORKDIR /
-
-ENTRYPOINT [ "sh", "/vault/build/run.sh" ]
+ENTRYPOINT [ "sh", "./run.sh" ]

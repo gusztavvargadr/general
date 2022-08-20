@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 
-set -o errexit
-set -o nounset
+set -eux
 
 cd `dirname $0`
 
-docker-compose down --rmi all --volumes
+docker-compose down --rmi all -v
 
 docker image prune -f
 docker builder prune -af
 
-rm -Rf artifacts
+sudo rm -Rf artifacts

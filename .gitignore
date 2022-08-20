@@ -1,8 +1,5 @@
 .vagrant
-tmp
-
 .terraform*
-terraform.tfstate*
-.ssh
+docker-compose.override.yml
 
 artifacts

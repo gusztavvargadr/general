@@ -1,17 +1,31 @@
 version: '3'
 
 services:
+  config:
+    build:
+      context: ./
+      dockerfile: ./config/Dockerfile
+      args:
+        TERRAFORM_IMAGE_NAME:
+        TERRAFORM_VERSION:
+    volumes:
+      - config-state:/tmp/vault/config/.terraform/backends/
+      - config-ca:/tmp/vault/config/artifacts/ca/
+      - config-server:/tmp/vault/config/artifacts/server/
+      - config-cli:/tmp/vault/config/artifacts/cli/
+
   server:
     build:
-      context: ./server/
-      dockerfile: ./Dockerfile
+      context: ./
+      dockerfile: ./server/Dockerfile
       args:
         VAULT_IMAGE_NAME:
         VAULT_VERSION:
     cap_add:
       - IPC_LOCK
     volumes:
-      - server:/vault/file/
+      - server-state:/vault/file/
+      - config-server:/vault/config/
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
 
@@ -24,9 +38,10 @@ services:
         UBUNTU_VERSION:
         VAULT_VERSION:
     volumes:
-      - init:/vault/init/
+      - config-cli:${VAULT_CLI_PATH}
     environment:
-      VAULT_ADDR: http://server:${SERVER_PORT}
+      VAULT_CLI_PATH:
+      VAULT_ADDR:
 
   cli:
     build:
@@ -36,23 +51,28 @@ services:
         VAULT_IMAGE_NAME:
         VAULT_VERSION:
     volumes:
-      - init:/vault/init/
+      - config-cli:${VAULT_CLI_PATH}
     environment:
-      VAULT_ADDR: http://server:${SERVER_PORT}
+      VAULT_CLI_PATH:
+      VAULT_ADDR:
 
   export:
     build:
       context: ./export/
       dockerfile: ./Dockerfile
       args:
-        VAULT_IMAGE_NAME:
-        VAULT_VERSION:
+        UBUNTU_IMAGE_NAME:
+        UBUNTU_VERSION:
     volumes:
-      - init:/vault/init/
-      - ./artifacts/:/vault/artifacts/
+      - config-cli:${VAULT_CLI_PATH}
+      - ./artifacts/:/tmp/vault/export/artifacts/
     environment:
-      VAULT_ADDR: http://localhost:${SERVER_PORT}
+      VAULT_CLI_PATH:
+      VAULT_ADDR:
 
 volumes:
-  server:
-  init:
+  config-state:
+  config-ca:
+  config-server:
+  config-cli:
+  server-state:

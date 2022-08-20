@@ -5,7 +5,7 @@ FROM ${UBUNTU_IMAGE_NAME}:${UBUNTU_VERSION}
 
 ARG VAULT_VERSION
 
-WORKDIR /tmp/vault/init/
+WORKDIR /tmp/vault/
 
 ADD ./build.sh ./
 RUN sh ./build.sh ${VAULT_VERSION}

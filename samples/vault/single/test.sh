@@ -4,8 +4,6 @@ set -eux
 
 cd `dirname $0`
 
-source ./artifacts/env.sh
-
 vault secrets list
 vault secrets enable -path=kv kv
 

@@ -9,10 +9,10 @@ services:
         TERRAFORM_IMAGE_NAME:
         TERRAFORM_VERSION:
     volumes:
-      - config-state:/tmp/vault/config/.terraform/backends/
-      - config-ca:/tmp/vault/config/artifacts/ca/
-      - config-server:/tmp/vault/config/artifacts/server/
-      - config-cli:/tmp/vault/config/artifacts/cli/
+      - config-state:/tmp/vault/.terraform/backends/
+      - config-ca:/tmp/vault/artifacts/ca/
+      - config-server:/tmp/vault/artifacts/server/
+      - config-cli:/tmp/vault/artifacts/cli/
 
   server:
     build:
@@ -27,7 +27,7 @@ services:
       - server-state:/vault/file/
       - config-server:/vault/config/
     ports:
-      - ${SERVER_PORT}:${SERVER_PORT}
+      - 127.0.0.1:${SERVER_PORT}:${SERVER_PORT}
 
   init:
     build:
@@ -38,9 +38,9 @@ services:
         UBUNTU_VERSION:
         VAULT_VERSION:
     volumes:
-      - config-cli:${VAULT_CLI_PATH}
+      - config-cli:/tmp/vault/artifacts/cli/
+    network_mode: host
     environment:
-      VAULT_CLI_PATH:
       VAULT_ADDR:
 
   cli:
@@ -51,10 +51,8 @@ services:
         VAULT_IMAGE_NAME:
         VAULT_VERSION:
     volumes:
-      - config-cli:${VAULT_CLI_PATH}
-    environment:
-      VAULT_CLI_PATH:
-      VAULT_ADDR:
+      - config-cli:/tmp/vault/artifacts/cli/
+    network_mode: host
 
   export:
     build:
@@ -64,11 +62,8 @@ services:
         UBUNTU_IMAGE_NAME:
         UBUNTU_VERSION:
     volumes:
-      - config-cli:${VAULT_CLI_PATH}
-      - ./artifacts/:/tmp/vault/export/artifacts/
-    environment:
-      VAULT_CLI_PATH:
-      VAULT_ADDR:
+      - config-cli:/tmp/vault/artifacts/cli/
+      - ./artifacts/:/tmp/vault/artifacts/export/
 
 volumes:
   config-state:

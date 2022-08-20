@@ -3,7 +3,7 @@ ARG UBUNTU_VERSION
 
 FROM ${UBUNTU_IMAGE_NAME}:${UBUNTU_VERSION}
 
-WORKDIR /tmp/vault/export/
+WORKDIR /tmp/vault/
 
 ADD ./ ./
 

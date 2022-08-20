@@ -3,7 +3,7 @@ ARG VAULT_VERSION
 
 FROM ${VAULT_IMAGE_NAME}:${VAULT_VERSION}
 
-WORKDIR /tmp/vault/cli/
+WORKDIR /tmp/vault/
 
 ADD ./ ./
 

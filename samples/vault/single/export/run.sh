@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
 
-set -eux
+set -eu
 
-mkdir -p ./artifacts/cli/
-cp -R ${VAULT_CLI_PATH}* ./artifacts/cli/
+cp -R ./artifacts/cli/ ./artifacts/export/

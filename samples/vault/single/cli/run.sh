@@ -1,9 +1,7 @@
 #!/usr/bin/env sh
 
-set -eux
+set -eu
 
-cd $VAULT_CLI_PATH
-
-source ./env.sh
+eval `sh ./artifacts/cli/env.sh`
 
 vault $*

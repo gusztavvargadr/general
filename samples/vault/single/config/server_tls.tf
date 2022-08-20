@@ -16,7 +16,7 @@ resource "tls_cert_request" "server" {
     common_name = local.server_common_name
   }
 
-  dns_names    = ["localhost", "vault", "server"]
+  dns_names    = ["localhost", "vault"]
   ip_addresses = ["127.0.0.1"]
 }
 

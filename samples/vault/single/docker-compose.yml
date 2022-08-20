@@ -27,7 +27,7 @@ services:
       - server-state:/vault/file/
       - config-server:/vault/config/
     ports:
-      - 127.0.0.1:${SERVER_PORT}:${SERVER_PORT}
+      - ${SERVER_PORT}:${SERVER_PORT}
 
   init:
     build:

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-set -o errexit
-set -o nounset
+set -eux
 
-eval `bash ./env.sh`
+cd `dirname $0`
 
+vault secrets list
 vault secrets enable -path=kv kv
 
 vault kv put kv/hello target=world

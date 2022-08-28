@@ -9,7 +9,6 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get update -y -q
 apt-get install -y -q wget unzip jq net-tools
 apt-get clean
-rm -Rf /var/lib/apt/lists/*
 
 export VAULT_ZIP_FILE=vault_${VAULT_VERSION}_linux_amd64.zip
 export VAULT_BINARY_FILE=vault

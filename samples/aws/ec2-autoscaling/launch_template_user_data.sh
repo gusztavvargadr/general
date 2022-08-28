@@ -1,15 +1,14 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -euxo pipefail
 
-apt update -qq
-apt install -qq -y apt-transport-https
+export DEBIAN_FRONTEND=noninteractive
 
-pushd /tmp
-wget -qO - https://packages.chef.io/chef.asc | sudo apt-key add -
-echo "deb https://packages.chef.io/repos/apt/stable $(lsb_release -cs) main" > chef.list
-mv chef.list /etc/apt/sources.list.d/
-apt update -qq
-popd
+apt-get update -q -y
+apt-get install -q -y curl locales
+apt-get clean
 
-apt install -qq -y chef
+locale-gen en_US.UTF-8
+update-locale LANG=en_US.UTF-8
+
+curl -Ls https://omnitruck.chef.io/install.sh | bash -s -- -P chef

@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
-set -eu
+set -eux
 
-cp -R ./artifacts/cli/ ./artifacts/export/
+cp -R ./artifacts/ca/ ./artifacts/export/
+cp -R ./artifacts/server/ ./artifacts/export/
+cp -R ./artifacts/init/ ./artifacts/export/

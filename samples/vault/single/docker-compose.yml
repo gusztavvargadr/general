@@ -3,21 +3,21 @@ version: '3'
 services:
   config:
     build:
-      context: ./
-      dockerfile: ./config/Dockerfile
+      context: ./config/
+      dockerfile: ./Dockerfile
       args:
         TERRAFORM_IMAGE_NAME:
         TERRAFORM_VERSION:
     volumes:
       - config-state:/tmp/vault/.terraform/backends/
-      - config-ca:/tmp/vault/artifacts/ca/
-      - config-server:/tmp/vault/artifacts/server/
-      - config-cli:/tmp/vault/artifacts/cli/
+      - config-artifacts-ca:/tmp/vault/artifacts/ca/
+      - config-artifacts-server:/tmp/vault/artifacts/server/
+      - config-artifacts-init:/tmp/vault/artifacts/init/
 
   server:
     build:
-      context: ./
-      dockerfile: ./server/Dockerfile
+      context: ./server/
+      dockerfile: ./Dockerfile
       args:
         VAULT_IMAGE_NAME:
         VAULT_VERSION:
@@ -25,7 +25,7 @@ services:
       - IPC_LOCK
     volumes:
       - server-state:/vault/file/
-      - config-server:/vault/config/
+      - config-artifacts-server:/vault/config/
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
 
@@ -34,40 +34,33 @@ services:
       context: ./init/
       dockerfile: ./Dockerfile
       args:
-        UBUNTU_IMAGE_NAME:
-        UBUNTU_VERSION:
-        VAULT_VERSION:
-    volumes:
-      - config-cli:/tmp/vault/artifacts/cli/
-    network_mode: host
-    environment:
-      VAULT_ADDR:
-
-  cli:
-    build:
-      context: ./cli/
-      dockerfile: ./Dockerfile
-      args:
         VAULT_IMAGE_NAME:
         VAULT_VERSION:
     volumes:
-      - config-cli:/tmp/vault/artifacts/cli/
+      - config-artifacts-init:/tmp/vault/artifacts/init/
     network_mode: host
+    environment:
+      VAULT_ADDR: ${VAULT_ADDR}
 
   export:
     build:
       context: ./export/
       dockerfile: ./Dockerfile
       args:
-        UBUNTU_IMAGE_NAME:
-        UBUNTU_VERSION:
+        VAULT_IMAGE_NAME:
+        VAULT_VERSION:
     volumes:
-      - config-cli:/tmp/vault/artifacts/cli/
       - ./artifacts/:/tmp/vault/artifacts/export/
+      - config-artifacts-ca:/tmp/vault/artifacts/ca/
+      - config-artifacts-server:/tmp/vault/artifacts/server/
+      - config-artifacts-init:/tmp/vault/artifacts/init/
+    network_mode: host
+    environment:
+      VAULT_ADDR: ${VAULT_ADDR}
 
 volumes:
   config-state:
-  config-ca:
-  config-server:
-  config-cli:
+  config-artifacts-ca:
+  config-artifacts-server:
+  config-artifacts-init:
   server-state:

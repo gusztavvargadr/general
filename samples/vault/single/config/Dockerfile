@@ -8,9 +8,10 @@ WORKDIR /tmp/vault/
 ENV TF_INPUT=false
 ENV TF_IN_AUTOMATION=true
 
-ADD ./config/terraform.tf ./
+ADD ./terraform.tf ./
 RUN terraform init
 
-ADD ./config/ ./
+ADD ./*.tf ./
+ADD ./*.hcl ./
 
 CMD [ "apply", "-auto-approve" ]

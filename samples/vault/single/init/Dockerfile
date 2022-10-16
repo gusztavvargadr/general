@@ -1,15 +1,13 @@
-ARG UBUNTU_IMAGE_NAME
-ARG UBUNTU_VERSION
-
-FROM ${UBUNTU_IMAGE_NAME}:${UBUNTU_VERSION}
-
+ARG VAULT_IMAGE_NAME
 ARG VAULT_VERSION
+
+FROM ${VAULT_IMAGE_NAME}:${VAULT_VERSION}
 
 WORKDIR /tmp/vault/
 
-ADD ./build.sh ./
-RUN sh ./build.sh ${VAULT_VERSION}
+RUN apk add --no-cache jq
 
-ADD ./ ./
+ADD ./run.sh ./
 
-ENTRYPOINT [ "sh", "./run.sh" ]
+ENTRYPOINT [ "sh" ]
+CMD [ "./run.sh" ]

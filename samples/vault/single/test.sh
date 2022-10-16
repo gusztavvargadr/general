@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
-set -eux
+set -euxo pipefail
 
 cd `dirname $0`
+
+eval `bash ./artifacts/init/env.sh`
 
 vault secrets list
 vault secrets enable -path=kv kv

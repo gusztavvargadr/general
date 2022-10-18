@@ -3,15 +3,14 @@ ARG TERRAFORM_VERSION
 
 FROM ${TERRAFORM_IMAGE_NAME}:${TERRAFORM_VERSION}
 
-WORKDIR /tmp/vault/
+WORKDIR /tmp/vault/config/
 
 ENV TF_INPUT=false
 ENV TF_IN_AUTOMATION=true
 
-ADD ./terraform.tf ./
+ADD ./config/terraform.tf ./
 RUN terraform init
 
-ADD ./*.tf ./
-ADD ./*.hcl ./
+ADD ./config/ ./
 
 CMD [ "apply", "-auto-approve" ]

@@ -2,9 +2,11 @@
 
 set -eux
 
-cd ./artifacts/init/
+cd `dirname $0`
 
-export VAULT_CAPATH=./ca.crt
+cd ./config/
+
+export VAULT_CAPATH=`pwd`/ca.crt
 
 vault status -format=json | tee ./status.json
 VAULT_INITIALIZED=`jq -r .initialized ./status.json`
@@ -21,8 +23,11 @@ fi
 export VAULT_TOKEN=`jq -r .root_token ./operator-init.json`
 
 cat <<EOF > ./env.sh
-cd \`dirname \$0\`
-echo export VAULT_ADDR=$VAULT_ADDR
-echo export VAULT_TOKEN=$VAULT_TOKEN
-echo export VAULT_CAPATH=\`pwd\`/ca.crt
+#!/usr/bin/env sh
+
+export VAULT_TOKEN=$VAULT_TOKEN
+export VAULT_CAPATH=\`dirname \$0\`/ca.crt
+
+\$*
 EOF
+chmod +x ./env.sh

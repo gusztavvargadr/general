@@ -14,5 +14,4 @@ docker builder prune -af
 
 docker network prune -f
 
-sudo rm -Rf ./artifacts/
 git clean -ndX

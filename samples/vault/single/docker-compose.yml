@@ -3,64 +3,48 @@ version: '3'
 services:
   config:
     build:
-      context: ./config/
-      dockerfile: ./Dockerfile
+      context: ./
+      dockerfile: ./config/Dockerfile
       args:
         TERRAFORM_IMAGE_NAME:
         TERRAFORM_VERSION:
     volumes:
-      - config-state:/tmp/vault/.terraform/backends/
-      - config-artifacts-ca:/tmp/vault/artifacts/ca/
-      - config-artifacts-server:/tmp/vault/artifacts/server/
-      - config-artifacts-init:/tmp/vault/artifacts/init/
+      - config-state:/tmp/vault/config/.terraform/backends/
+      - server-config:/tmp/vault/config/artifacts/server/
+      - cli-config:/tmp/vault/config/artifacts/cli/
 
   server:
     build:
-      context: ./server/
-      dockerfile: ./Dockerfile
+      context: ./
+      dockerfile: ./server/Dockerfile
       args:
         VAULT_IMAGE_NAME:
         VAULT_VERSION:
     cap_add:
       - IPC_LOCK
     volumes:
+      - server-config:/vault/config/
       - server-state:/vault/file/
-      - config-artifacts-server:/vault/config/
+      - server-logs:/vault/logs/
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
 
-  init:
+  cli:
     build:
-      context: ./init/
-      dockerfile: ./Dockerfile
+      context: ./
+      dockerfile: ./cli/Dockerfile
       args:
         VAULT_IMAGE_NAME:
         VAULT_VERSION:
     volumes:
-      - config-artifacts-init:/tmp/vault/artifacts/init/
-    network_mode: host
-    environment:
-      VAULT_ADDR: ${VAULT_ADDR}
-
-  export:
-    build:
-      context: ./export/
-      dockerfile: ./Dockerfile
-      args:
-        VAULT_IMAGE_NAME:
-        VAULT_VERSION:
-    volumes:
-      - ./artifacts/:/tmp/vault/artifacts/export/
-      - config-artifacts-ca:/tmp/vault/artifacts/ca/
-      - config-artifacts-server:/tmp/vault/artifacts/server/
-      - config-artifacts-init:/tmp/vault/artifacts/init/
+      - cli-config:/tmp/vault/cli/config/
     network_mode: host
     environment:
       VAULT_ADDR: ${VAULT_ADDR}
 
 volumes:
   config-state:
-  config-artifacts-ca:
-  config-artifacts-server:
-  config-artifacts-init:
+  server-config:
   server-state:
+  server-logs:
+  cli-config:

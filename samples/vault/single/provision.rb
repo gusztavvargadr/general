@@ -5,24 +5,6 @@ apt_update '' do
   action :update
 end
 
-apt_package_core = [ 'jq', 'net-tools' ]
-apt_package apt_package_core do
-  action :install
-end
-
-apt_repository 'hashicorp' do
-  uri 'https://apt.releases.hashicorp.com'
-  key 'https://apt.releases.hashicorp.com/gpg'
-  distribution ubuntu_codename
-  components ['main']
-  action :add
-end
-
-apt_package_hashicorp = [ 'terraform', 'vault' ]
-apt_package apt_package_hashicorp do
-  action :install
-end
-
 apt_repository 'docker' do
   uri 'https://download.docker.com/linux/ubuntu'
   key 'https://download.docker.com/linux/ubuntu/gpg'
@@ -42,4 +24,17 @@ group 'docker' do
   append true
   members group_docker_members
   action :create
+end
+
+apt_repository 'hashicorp' do
+  uri 'https://apt.releases.hashicorp.com'
+  key 'https://apt.releases.hashicorp.com/gpg'
+  distribution ubuntu_codename
+  components ['main']
+  action :add
+end
+
+apt_package_hashicorp = [ 'vault' ]
+apt_package apt_package_hashicorp do
+  action :install
 end

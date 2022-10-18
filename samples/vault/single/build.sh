@@ -11,4 +11,4 @@ docker compose run --rm config
 docker compose up -d server
 sleep 5s
 
-docker compose run --rm --entrypoint ./init.sh cli
+docker compose run --rm cli status

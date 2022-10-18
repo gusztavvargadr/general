@@ -38,6 +38,7 @@ services:
         VAULT_VERSION:
     volumes:
       - cli-config:/tmp/vault/cli/config/
+      - ./cli/artifacts/:/tmp/vault/cli/artifacts/
     network_mode: host
     environment:
       VAULT_ADDR: ${VAULT_ADDR}

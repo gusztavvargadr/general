@@ -4,5 +4,7 @@ set -euxo pipefail
 
 cd `dirname $0`
 
-docker compose run --rm cli vault token lookup
-docker compose run --rm cli vault secrets list
+docker compose run --rm cli token lookup
+
+eval `./cli/artifacts/env.sh`
+vault token lookup

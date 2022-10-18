@@ -10,5 +10,4 @@ RUN apk add --no-cache jq net-tools
 ADD ./cli/ ./
 RUN chmod +x ./*.sh
 
-ENTRYPOINT [ "./config/env.sh" ]
-CMD [ "sh" ]
+ENTRYPOINT [ "./run.sh" ]

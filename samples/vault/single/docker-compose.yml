@@ -28,6 +28,7 @@ services:
       - server-logs:/vault/logs/
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
+    restart: unless-stopped
 
   cli:
     build:
@@ -38,7 +39,7 @@ services:
         VAULT_VERSION:
     volumes:
       - cli-config:/tmp/vault/cli/config/
-      - ./cli/artifacts/:/tmp/vault/cli/artifacts/
+      - ./cli/artifacts/:/tmp/vault/cli/state/
     network_mode: host
     environment:
       VAULT_ADDR: ${VAULT_ADDR}

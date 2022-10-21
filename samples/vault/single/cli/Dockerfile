@@ -3,8 +3,11 @@ ARG VAULT_VERSION
 
 FROM ${VAULT_IMAGE_NAME}:${VAULT_VERSION}
 
-WORKDIR /tmp/vault/
+WORKDIR /tmp/vault/cli/
 
-ADD ./ ./
+RUN apk add --no-cache jq net-tools
 
-ENTRYPOINT [ "sh", "./run.sh" ]
+ADD ./cli/ ./
+RUN chmod +x ./*.sh
+
+ENTRYPOINT [ "./run.sh" ]

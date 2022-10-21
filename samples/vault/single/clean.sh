@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 
-set -eux
+set -euxo pipefail
 
 cd `dirname $0`
 
-docker-compose down --rmi all -v
+docker compose down --rmi all --volumes
 
 docker image prune -f
 docker builder prune -af
 
-sudo rm -Rf artifacts
+sudo rm -Rf ./**/artifacts/
+git clean -ndX

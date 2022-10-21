@@ -1,5 +1,5 @@
 .vagrant
 .terraform*
-docker-compose.override.yml
+docker-compose.*override*.yml
 
 artifacts

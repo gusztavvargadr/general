@@ -2,6 +2,5 @@
 
 set -eu
 
-eval `sh ./artifacts/cli/env.sh`
-
+eval `./state/env.sh`
 vault $*

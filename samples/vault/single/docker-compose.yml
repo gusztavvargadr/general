@@ -9,10 +9,9 @@ services:
         TERRAFORM_IMAGE_NAME:
         TERRAFORM_VERSION:
     volumes:
-      - config-state:/tmp/vault/.terraform/backends/
-      - config-ca:/tmp/vault/artifacts/ca/
-      - config-server:/tmp/vault/artifacts/server/
-      - config-cli:/tmp/vault/artifacts/cli/
+      - config-state:/tmp/vault/config/.terraform/backends/
+      - server-config:/tmp/vault/config/artifacts/server/
+      - cli-config:/tmp/vault/config/artifacts/cli/
 
   server:
     build:
@@ -24,50 +23,30 @@ services:
     cap_add:
       - IPC_LOCK
     volumes:
+      - server-config:/vault/config/
       - server-state:/vault/file/
-      - config-server:/vault/config/
+      - server-logs:/vault/logs/
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
-
-  init:
-    build:
-      context: ./init/
-      dockerfile: ./Dockerfile
-      args:
-        UBUNTU_IMAGE_NAME:
-        UBUNTU_VERSION:
-        VAULT_VERSION:
-    volumes:
-      - config-cli:/tmp/vault/artifacts/cli/
-    network_mode: host
-    environment:
-      VAULT_ADDR:
+    restart: unless-stopped
 
   cli:
     build:
-      context: ./cli/
-      dockerfile: ./Dockerfile
+      context: ./
+      dockerfile: ./cli/Dockerfile
       args:
         VAULT_IMAGE_NAME:
         VAULT_VERSION:
     volumes:
-      - config-cli:/tmp/vault/artifacts/cli/
+      - cli-config:/tmp/vault/cli/config/
+      - ./cli/artifacts/:/tmp/vault/cli/state/
     network_mode: host
-
-  export:
-    build:
-      context: ./export/
-      dockerfile: ./Dockerfile
-      args:
-        UBUNTU_IMAGE_NAME:
-        UBUNTU_VERSION:
-    volumes:
-      - config-cli:/tmp/vault/artifacts/cli/
-      - ./artifacts/:/tmp/vault/artifacts/export/
+    environment:
+      VAULT_ADDR: ${VAULT_ADDR}
 
 volumes:
   config-state:
-  config-ca:
-  config-server:
-  config-cli:
+  server-config:
   server-state:
+  server-logs:
+  cli-config:

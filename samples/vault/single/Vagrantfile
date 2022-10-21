@@ -1,6 +1,13 @@
 Vagrant.configure("2") do |config|
-  config.vm.box = "gusztavvargadr/docker-linux"
+  config.vm.box = "gusztavvargadr/ubuntu-server"
 
+  config.vm.provision "shell", inline: "mkdir -p /var/chef/cache/"
+  config.vm.provision "chef_apply" do |provision_chef_apply|
+    provision_chef_apply.recipe = File.read("./provision.rb")
+  end
+
+  config.vm.provision "shell", inline: "lsb_release -a", privileged: false, reset: true
   config.vm.provision "shell", inline: "bash /vagrant/restore.sh", privileged: false
   config.vm.provision "shell", inline: "bash /vagrant/build.sh", privileged: false
+  config.vm.provision "shell", inline: "bash /vagrant/test.sh", privileged: false
 end

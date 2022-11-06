@@ -1,0 +1,4 @@
+chefignore
+Policyfile*
+*kitchen*
+test*

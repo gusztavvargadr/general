@@ -1,0 +1,16 @@
+driver:
+  name: vagrant
+  vm_hostname: false
+  vagrantfiles:
+    - ../../core/kitchen.Vagrantfile
+
+verifier:
+  name: inspec
+
+platforms:
+  - name: ubuntu
+    driver:
+      box: gusztavvargadr/ubuntu-server
+
+suites:
+  - name: default

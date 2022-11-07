@@ -1,8 +1,8 @@
 directory = File.dirname(__FILE__)
 
-require "#{directory}/../../core/Policyfile"
+require "#{directory}/chef/core.Policyfile"
 
-name 'gusztavvargadr_vsts_agent_linux'
+name 'gusztavvargadr_vsts_agent_linux_core'
 
 default_sources
 

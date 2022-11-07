@@ -3,10 +3,11 @@ unified_mode true
 default_action :upgrade
 
 action :upgrade do
-  agent_version = "2.211.1"
+  agent_version = '2.211.1'
+  agent_arch= 'x64'
 
-  agent_archive_download_uri = "https://vstsagentpackage.azureedge.net/agent/#{agent_version}/vsts-agent-linux-x64-#{agent_version}.tar.gz"
-  agent_archive_local_path = "#{Chef::Config['file_cache_path']}/vsts-agent-linux-x64-#{agent_version}.tar.gz"
+  agent_archive_download_uri = "https://vstsagentpackage.azureedge.net/agent/#{agent_version}/vsts-agent-linux-#{agent_arch}-#{agent_version}.tar.gz"
+  agent_archive_local_path = "#{Chef::Config['file_cache_path']}/vsts-agent-linux-#{agent_arch}-#{agent_version}.tar.gz"
 
   remote_file agent_archive_local_path do
     source agent_archive_download_uri
@@ -23,6 +24,7 @@ action :upgrade do
   execute 'installdependencies.sh' do
     command agent_install_script_path
     action :run
+    # not_if
   end
 end
 

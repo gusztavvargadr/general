@@ -3,11 +3,12 @@ unified_mode true
 default_action :upgrade
 
 action :upgrade do
+  apt_repository_arch = shell_out('dpkg --print-architecture').stdout.strip
   apt_repository 'docker' do
     uri 'https://download.docker.com/linux/ubuntu'
     key 'https://download.docker.com/linux/ubuntu/gpg'
     components ['stable']
-    arch shell_out('dpkg --print-architecture').stdout.strip
+    arch apt_repository_arch
     action :add
   end
 

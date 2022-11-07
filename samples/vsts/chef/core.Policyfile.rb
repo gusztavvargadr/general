@@ -5,7 +5,7 @@ def default_sources
   directory = File.dirname(__FILE__)
 
   default_source :supermarket
-  default_source :chef_repo, "#{directory}/../cookbooks"
+  default_source :chef_repo, "#{directory}/cookbooks/"
 end
 
 def attributes(paths)

@@ -6,5 +6,6 @@ docker-compose.*override*.yml
 
 .kitchen
 Policyfile.lock.json
+.chef
 
 artifacts

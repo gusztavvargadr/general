@@ -2,7 +2,7 @@ driver:
   name: vagrant
   vm_hostname: false
   vagrantfiles:
-    - ../../core/kitchen.Vagrantfile
+    - ../../kitchen.Vagrantfile
 
 verifier:
   name: inspec

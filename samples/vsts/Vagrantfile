@@ -1,0 +1,37 @@
+directory = File.dirname(__FILE__)
+FileUtils.mkdir_p "#{directory}/.chef/"
+
+Vagrant.configure("2") do |config|
+  config.vm.provider "virtualbox" do |provider_virtualbox|
+    provider_virtualbox.cpus = 4
+    provider_virtualbox.memory = 8192
+
+    provider_virtualbox.customize [ "modifyvm", :id, "--nested-hw-virt", "on" ]
+    provider_virtualbox.linked_clone = true
+  end
+
+  config.vm.provider "hyperv" do |provider_hyperv|
+    provider_hyperv.cpus = 4
+    provider_hyperv.memory = 8192
+
+    provider_hyperv.enable_virtualization_extensions = true
+    provider_hyperv.linked_clone = true
+  end
+
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  config.vm.define "agent-linux-core" do |config_agent_linux_core|
+    config_agent_linux_core.vm.box = "gusztavvargadr/ubuntu-server"
+
+    config_agent_linux_core.trigger.before [ :up, :reload, :provision ] do |trigger_chef_update|
+      trigger_chef_update.run = { inline: "chef update" }
+    end
+
+    config_agent_linux_core.trigger.before [ :up, :reload, :provision ] do |trigger_chef_export|
+      trigger_chef_export.run = { inline: "chef export ./.chef/ -f" }
+    end
+  end
+
+  config.vm.provision "file", source: "#{directory}/.chef/", destination: "/tmp/"
+  config.vm.provision "shell", inline: "cd /tmp/.chef/ && chef-client -z"
+end

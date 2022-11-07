@@ -3,11 +3,12 @@ unified_mode true
 default_action :upgrade
 
 action :upgrade do
+  apt_repository_arch = shell_out('dpkg --print-architecture').stdout.strip
   apt_repository 'virtualbox' do
     uri 'https://download.virtualbox.org/virtualbox/debian'
     key 'https://www.virtualbox.org/download/oracle_vbox_2016.asc'
     components ['contrib']
-    arch shell_out('dpkg --print-architecture').stdout.strip
+    arch apt_repository_arch
     action :add
   end
 
@@ -27,9 +28,10 @@ action :upgrade do
     action :create
   end
 
+  virtualbox_extension_pack_hash = '33d7284dc4a0ece381196fda3cfe2ed0e1e8e7ed7f27b9a9ebc4ee22e24bd23c'
   bash 'vboxmanage extpack install' do
     code <<-EOH
-      vboxmanage extpack install --replace --accept-license=33d7284dc4a0ece381196fda3cfe2ed0e1e8e7ed7f27b9a9ebc4ee22e24bd23c #{virtualbox_extension_pack_local_path}
+      vboxmanage extpack install --replace --accept-license=#{virtualbox_extension_pack_hash} #{virtualbox_extension_pack_local_path}
     EOH
     action :run
   end

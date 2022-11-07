@@ -20,6 +20,7 @@ end
 
 gusztavvargadr_vsts_agent_linux_docker '' do
   action :upgrade
+  not_if { reboot_pending? }
 end
 
 gusztavvargadr_vsts_agent_linux_virtualbox '' do

@@ -10,7 +10,7 @@ action :upgrade do
     action :add
   end
 
-  apt_package_hashicorp = [ 'vagrant', 'packer', 'terraform', 'vault', 'consul' ]
+  apt_package_hashicorp = [ 'vagrant', 'packer', 'terraform', 'consul', 'vault' ]
   apt_package apt_package_hashicorp do
     action :upgrade
   end

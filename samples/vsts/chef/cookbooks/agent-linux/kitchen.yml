@@ -13,4 +13,5 @@ platforms:
       box: gusztavvargadr/ubuntu-server
 
 suites:
-  - name: default
+  - name: upgrade
+    named_run_list: upgrade

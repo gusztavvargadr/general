@@ -15,11 +15,27 @@ action :upgrade do
   bash 'apt dist-upgrade' do
     code <<-EOH
       apt-mark hold chef
-      apt dist-upgrade -y -qq
-      apt autoremove -y -qq
-      apt clean -y -qq
+      apt-get dist-upgrade -y -qq
+      apt-get autoremove -y -qq
+      apt-get clean -y -qq
       apt-mark unhold chef
     EOH
     not_if { shell_out('apt list --upgradable -qq | grep -v chef').stdout.empty? }
+  end
+
+  user 'vsts' do
+    home '/home/vsts/'
+    action :create
+  end
+
+  group 'vsts' do
+    members [ 'vsts', shell_out('echo ${SUDO_USER:-${USER}}').stdout.strip ]
+    action :create
+  end
+
+  directory '/home/vsts/' do
+    owner 'vsts'
+    group 'vsts'
+    action :create
   end
 end

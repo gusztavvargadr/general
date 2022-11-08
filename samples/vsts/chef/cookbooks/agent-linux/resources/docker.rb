@@ -17,7 +17,7 @@ action :upgrade do
     action :upgrade
   end
 
-  group_docker_members = shell_out('echo ${SUDO_USER:-${USER}}').stdout.strip
+  group_docker_members = [ 'vsts', shell_out('echo ${SUDO_USER:-${USER}}').stdout.strip ]
   group 'docker' do
     append true
     members group_docker_members

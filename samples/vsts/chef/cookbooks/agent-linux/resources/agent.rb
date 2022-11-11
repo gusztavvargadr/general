@@ -15,7 +15,7 @@ action :upgrade do
     action :create
   end
 
-  agent_local_path = "/opt/vsts/"
+  agent_local_path = "/vsts/"
   archive_file agent_archive_local_path do
     destination agent_local_path
     owner 'vsts'
@@ -33,7 +33,7 @@ action :upgrade do
 end
 
 action :add do
-  agent_local_path = "/opt/vsts/"
+  agent_local_path = "/vsts/"
   agent_svc_script_path = "./svc.sh"
   agent_runsvc_script_path = "./runsvc.sh"
   env_file_path = "#{agent_local_path}.env"
@@ -64,7 +64,7 @@ VSTS_AGENT_CAP_NETWORK=upload
   agent_config_script_path = "./config.sh"
   agent_config_script_environment = {
     'VSTS_AGENT_INPUT_URL' => ENV['VSTS_AGENT_INPUT_URL'],
-    'VSTS_AGENT_INPUT_AUTH' => 'pat',
+    'VSTS_AGENT_INPUT_AUTH' => ENV['VSTS_AGENT_INPUT_AUTH'],
     'VSTS_AGENT_INPUT_TOKEN' => ENV['VSTS_AGENT_INPUT_TOKEN'],
     'VSTS_AGENT_INPUT_POOL' => ENV['VSTS_AGENT_INPUT_POOL'],
     'VSTS_AGENT_INPUT_AGENT' => ::SecureRandom.hex,
@@ -94,7 +94,7 @@ VSTS_AGENT_CAP_NETWORK=upload
 end
 
 action :remove do
-  agent_local_path = "/opt/vsts/"
+  agent_local_path = "/vsts/"
   agent_svc_script_path = "./svc.sh"
 
   execute 'svc.sh-stop' do

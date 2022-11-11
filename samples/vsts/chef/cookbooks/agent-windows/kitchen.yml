@@ -8,12 +8,14 @@ verifier:
   name: inspec
 
 platforms:
-  - name: ubuntu
+  - name: windows
     driver:
-      box: gusztavvargadr/ubuntu-server
+      box: gusztavvargadr/windows-server-core
+    transport:
+      elevated: true
     provisioner:
-      max_retries: 2
-      wait_for_retry: 60
+      max_retries: 4
+      wait_for_retry: 300
 
 suites:
   - name: upgrade

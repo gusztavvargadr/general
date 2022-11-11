@@ -36,14 +36,35 @@ Vagrant.configure("2") do |config|
   
     config_env = {
       'VSTS_AGENT_INPUT_URL' => ENV['VSTS_AGENT_INPUT_URL'],
+      'VSTS_AGENT_INPUT_AUTH' => ENV['VSTS_AGENT_INPUT_AUTH'],
       'VSTS_AGENT_INPUT_TOKEN' => ENV['VSTS_AGENT_INPUT_TOKEN'],
       'VSTS_AGENT_INPUT_POOL' => ENV['VSTS_AGENT_INPUT_POOL'],
     }
 
     config_agent_linux_core.vm.provision "shell", inline: "cd /tmp/.chef/ && chef-client -z -n add", env: config_env
 
-    config_agent_linux_core.trigger.before [ :halt ] do |trigger_chef_export|
+    config_agent_linux_core.trigger.before [ :destroy ] do |trigger_chef_export|
       trigger_chef_export.run_remote = { inline: "cd /tmp/.chef/ && chef-client -z -n remove", env: config_env }
     end
+
+    # agent upgrade to contain other components, not recipe
+    # chef bootstrap
+    # user setup to agent from os
+
+# Vagrant configuration VAGRANT_DEFAULT_PROVIDER
+# Vagrant boxes
+
+# Packer configuration
+# Packer isos
+
+# Docker images
+
+# Warm-up
+
+    # handle reboot / reload
+    # magic strings and numbers
+    # chef helper lib
+    #env.sh, restart
+    # home/vsts folder insteadof opt
   end
 end

@@ -1,8 +1,0 @@
-{
-  "app": [{{ range service "app" }}
-    "http://{{ .Address }}:{{ .Port }}",
-  {{ end }}],
-  "api": [{{ range service "api" }}
-    "http://{{ .Address }}:{{ .Port }}",
-  {{ end }}]
-}

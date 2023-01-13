@@ -1,7 +1,0 @@
-**/.vagrant
-**/.terraform*
-
-**/Dockerfile
-**/docker-compose.*override*.yml
-
-**/artifacts

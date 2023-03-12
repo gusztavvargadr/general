@@ -1,8 +1,10 @@
 server = false
 retry_join = [ "server-agent" ]
 
-data_dir = "/consul/data/"
-datacenter = "local"
+data_dir = "{{ with secret "/secret/consul/core" }}{{ .Data.data.data_dir }}{{end}}"
+datacenter = "{{ with secret "/secret/consul/core" }}{{ .Data.data.datacenter }}{{end}}"
+
+bind_addr   = {{ `"{{ GetAllInterfaces | include \"name\" \"eth\" | sort \"-name\" | limit 1 | attr \"address\" }}"` }}
 client_addr = "127.0.0.1"
 
 encrypt = "{{ with secret "/secret/consul/gossip" }}{{ .Data.data.key }}{{end}}"
@@ -11,7 +13,7 @@ tls {
   defaults {
     verify_incoming = true
     verify_outgoing = true
-    ca_file         = "/consul/config/certs/ca-cert.pem"
+    ca_file         = "{{ with secret "/secret/consul/core" }}{{ printf "%scerts/ca-cert.pem" .Data.data.config_dir }}{{end}}"
   }
 
   internal_rpc {
@@ -19,7 +21,7 @@ tls {
   }
 }
 
-{{ with secret "/secret/consul/tls" }}{{ .Data.data.ca_cert | base64Decode | writeToFile "/tmp/consul/config/certs/ca-cert.pem" "" "" "0644" }}{{end}}
+{{ with secret "/secret/consul/tls" }}{{ .Data.data.ca_cert | base64Decode | writeToFile "./config/certs/ca-cert.pem" "" "" "0644" }}{{end}}
 
 auto_encrypt {
   tls = true

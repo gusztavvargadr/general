@@ -13,6 +13,8 @@ services:
       - core-agent-config:/consul/config/
       - core-agent-data:/consul/data/
     hostname: core
+    ports:
+      - 8500:8500
     environment:
       VAULT_ADDR:
       VAULT_TOKEN:
@@ -21,12 +23,10 @@ services:
     build:
       context: ./core/config/
       args:
-        TERRAFORM_IMAGE_NAME:
-        TERRAFORM_VERSION:
-        CONSUL_TEMPLATE_IMAGE_NAME:
-        CONSUL_TEMPLATE_VERSION:
         CONSUL_IMAGE_NAME:
         CONSUL_VERSION:
+        CONSUL_TEMPLATE_IMAGE_NAME:
+        CONSUL_TEMPLATE_VERSION:
         VAULT_IMAGE_NAME:
         VAULT_VERSION:
     volumes:
@@ -58,15 +58,13 @@ services:
       - server-agent-config:/consul/config/
       - server-agent-data:/consul/data/
     hostname: server
-    ports:
-      - 8500:8500
 
   server-config:
     build:
       context: ./server/config/
       args:
-        TERRAFORM_IMAGE_NAME:
-        TERRAFORM_VERSION:
+        CONSUL_IMAGE_NAME:
+        CONSUL_VERSION:
         CONSUL_TEMPLATE_IMAGE_NAME:
         CONSUL_TEMPLATE_VERSION:
     volumes:
@@ -90,8 +88,8 @@ services:
     build:
       context: ./client/config/
       args:
-        TERRAFORM_IMAGE_NAME:
-        TERRAFORM_VERSION:
+        CONSUL_IMAGE_NAME:
+        CONSUL_VERSION:
         CONSUL_TEMPLATE_IMAGE_NAME:
         CONSUL_TEMPLATE_VERSION:
     volumes:

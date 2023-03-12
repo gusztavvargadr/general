@@ -2,10 +2,17 @@
 
 set -eu
 
-CONSUL_GOSSIP_KEY=$(consul keygen)
-vault kv put -mount=secret /consul/gossip key=$CONSUL_GOSSIP_KEY
+CONSUL_CORE_CONFIG_DIR="/consul/config/"
+CONSUL_CORE_DATA_DIR="/consul/data/"
+CONSUL_CORE_DATACENTER="local"
+vault kv put -mount=secret /consul/core \
+  config_dir=$CONSUL_CORE_CONFIG_DIR \
+  data_dir=$CONSUL_CORE_DATA_DIR \
+  datacenter=$CONSUL_CORE_DATACENTER \
 
-cd /tmp/
+CONSUL_GOSSIP_KEY=$(consul keygen)
+vault kv put -mount=secret /consul/gossip \
+  key=$CONSUL_GOSSIP_KEY
 
 consul tls ca create
 CONSUL_TLS_CA_CERT=$(base64 -w 0 consul-agent-ca.pem)
@@ -21,6 +28,5 @@ vault kv put -mount=secret /consul/tls \
   server_cert=$CONSUL_TLS_SERVER_CERT \
   server_key=$CONSUL_TLS_SERVER_KEY
 
-cd /
-
 consul-template -config templates.hcl -once
+chown -R consul:consul ./config/

@@ -23,4 +23,4 @@ docker compose up -d client-agent
 
 # consul acl policy create -name dns-query -rules @./policy-dns-query.hcl
 # consul acl token create -policy-name dns-query -format json | tee ./artifacts/token-dns-query.json
-# consul acl set-agent-token default `jq -r .SecretID ./artifacts/token-dns-query.json`
+# consul acl set-agent-token default $(jq -r .SecretID ./artifacts/token-dns-query.json)

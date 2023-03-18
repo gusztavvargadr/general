@@ -56,8 +56,8 @@ services:
         CONSUL_VERSION:
     volumes:
       - server-agent-config:/consul/config/
-      - server-agent-data:/consul/data/
-    hostname: server
+    deploy:
+      replicas: 1
 
   server-config:
     build:
@@ -81,8 +81,8 @@ services:
         CONSUL_VERSION:
     volumes:
       - client-agent-config:/consul/config/
-      - client-agent-data:/consul/data/
-    hostname: client
+    deploy:
+      replicas: 1
 
   client-config:
     build:
@@ -102,6 +102,4 @@ volumes:
   core-agent-config:
   core-agent-data:
   server-agent-config:
-  server-agent-data:
   client-agent-config:
-  client-agent-data:

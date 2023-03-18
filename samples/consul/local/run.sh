@@ -18,6 +18,8 @@ docker compose up -d server-agent
 docker compose run --rm --entrypoint sh client-config ./run.sh
 docker compose up -d client-agent
 
+sleep 5s
+
 # consul members
 # consul catalog nodes | grep server | awk '{ print "retry_join = [ \"" $3 "\" ]" }' > ./tmp/join.hcl
 

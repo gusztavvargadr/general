@@ -12,7 +12,6 @@ services:
     volumes:
       - core-agent-config:/consul/config/
       - core-agent-data:/consul/data/
-    hostname: core
     ports:
       - 8500:8500
     environment:
@@ -56,6 +55,8 @@ services:
         CONSUL_VERSION:
     volumes:
       - server-agent-config:/consul/config/
+    ports:
+      - 8500
     deploy:
       replicas: 1
 

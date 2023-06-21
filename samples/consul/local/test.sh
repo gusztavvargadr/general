@@ -2,6 +2,4 @@
 
 set -eu
 
-bash ./run.sh
-
-docker compose exec core-agent consul members
+docker compose exec client-agent consul members

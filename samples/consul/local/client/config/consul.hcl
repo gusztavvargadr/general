@@ -9,6 +9,8 @@ client_addr = "127.0.0.1"
 
 encrypt = "{{ with secret "/secret/consul/gossip" }}{{ .Data.data.key }}{{end}}"
 
+{{ with secret "/secret/consul/tls/defaults" }}{{ .Data.data.ca_cert | base64Decode | writeToFile "./config/certs/ca-cert.pem" "" "" "0644" }}{{end}}
+
 tls {
   defaults {
     verify_incoming = true
@@ -20,8 +22,6 @@ tls {
     verify_server_hostname = true
   }
 }
-
-{{ with secret "/secret/consul/tls" }}{{ .Data.data.ca_cert | base64Decode | writeToFile "./config/certs/ca-cert.pem" "" "" "0644" }}{{end}}
 
 auto_encrypt {
   tls = true

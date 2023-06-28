@@ -11,9 +11,8 @@ services:
         VAULT_VERSION:
     volumes:
       - core-agent-config:/consul/config/
-      - core-agent-data:/consul/data/
     ports:
-      - 8500:8500
+      - 8501
     environment:
       VAULT_ADDR:
       VAULT_TOKEN:
@@ -30,6 +29,7 @@ services:
         VAULT_VERSION:
     volumes:
       - core-agent-config:/tmp/consul/config/
+      - ./.https:/tmp/consul/https/
     environment:
       VAULT_ADDR:
       VAULT_TOKEN:
@@ -41,7 +41,7 @@ services:
         VAULT_IMAGE_NAME:
         VAULT_VERSION:
     ports:
-      - 8200:8200
+      - 8200
     environment:
       VAULT_DEV_ROOT_TOKEN_ID:
       VAULT_ADDR:
@@ -56,9 +56,9 @@ services:
     volumes:
       - server-agent-config:/consul/config/
     ports:
-      - 8500
+      - 8501
     deploy:
-      replicas: 1
+      replicas: ${SERVER_COUNT}
 
   server-config:
     build:
@@ -83,7 +83,7 @@ services:
     volumes:
       - client-agent-config:/consul/config/
     deploy:
-      replicas: 1
+      replicas: ${CLIENT_COUNT}
 
   client-config:
     build:
@@ -101,6 +101,5 @@ services:
 
 volumes:
   core-agent-config:
-  core-agent-data:
   server-agent-config:
   client-agent-config:

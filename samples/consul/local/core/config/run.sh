@@ -25,7 +25,7 @@ consul tls cert create -server -dc $CONSUL_CORE_DATACENTER
 CONSUL_TLS_SERVER_CERT=$(base64 -w 0 $CONSUL_CORE_DATACENTER-server-consul-0.pem)
 CONSUL_TLS_SERVER_KEY=$(base64 -w 0 $CONSUL_CORE_DATACENTER-server-consul-0-key.pem)
 
-vault kv put -mount=secret /consul/tls \
+vault kv put -mount=secret /consul/tls/defaults \
   ca_cert=$CONSUL_TLS_CA_CERT \
   ca_key=$CONSUL_TLS_CA_KEY \
   server_cert=$CONSUL_TLS_SERVER_CERT \
@@ -33,6 +33,15 @@ vault kv put -mount=secret /consul/tls \
 
 cd ..
 rm -Rf ./tmp/
+
+CONSUL_TLS_CA_CERT=$(base64 -w 0 ./https/ca-cert.pem)
+CONSUL_TLS_SERVER_CERT=$(base64 -w 0 ./https/server-cert.pem)
+CONSUL_TLS_SERVER_KEY=$(base64 -w 0 ./https/server-key.pem)
+
+vault kv put -mount=secret /consul/tls/https \
+  ca_cert=$CONSUL_TLS_CA_CERT \
+  server_cert=$CONSUL_TLS_SERVER_CERT \
+  server_key=$CONSUL_TLS_SERVER_KEY
 
 consul-template -config templates.hcl -once
 chown -R consul:consul ./config/

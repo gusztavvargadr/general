@@ -7,6 +7,7 @@ ARG CONSUL_TEMPLATE_VERSION
 FROM ${CONSUL_TEMPLATE_IMAGE_NAME}:${CONSUL_TEMPLATE_VERSION} as consul-template
 
 FROM ${CONSUL_IMAGE_NAME}:${CONSUL_VERSION}
+
 COPY --from=consul-template /bin/consul-template /bin/
 
 WORKDIR /tmp/consul/

@@ -7,6 +7,7 @@ ARG VAULT_VERSION
 FROM ${VAULT_IMAGE_NAME}:${VAULT_VERSION} AS vault
 
 FROM ${CONSUL_IMAGE_NAME}:${CONSUL_VERSION}
+
 COPY --from=vault /bin/vault /bin/
 
 RUN apk add --no-cache jq

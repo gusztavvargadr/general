@@ -1,29 +1,19 @@
 server = true
 bootstrap_expect = 1
-
-data_dir = "{{ with secret "/secret/consul/core" }}{{ .Data.data.data_dir }}{{end}}"
 datacenter = "{{ with secret "/secret/consul/core" }}{{ .Data.data.datacenter }}{{end}}"
 
-bind_addr   = {{ `"{{ GetAllInterfaces | include \"name\" \"eth\" | sort \"-name\" | limit 1 | attr \"address\" }}"` }}
+data_dir = "{{ with secret "/secret/consul/core" }}{{ .Data.data.data_dir }}{{end}}"
+
+bind_addr   = "{{ `{{ GetAllInterfaces | include \"name\" \"eth\" | sort \"-name\" | limit 1 | attr \"address\" }}` }}"
 client_addr = "0.0.0.0"
 
-addresses {
-  http = "127.0.0.1"
-}
-
-ports {
-  https = 8501
-}
-
-connect {
-  enabled = true
-}
-
-ui_config {
-  enabled = true
-}
-
 encrypt = "{{ with secret "/secret/consul/gossip" }}{{ .Data.data.key }}{{end}}"
+
+acl {
+  enabled                  = true
+  default_policy           = "deny"
+  enable_token_persistence = true
+}
 
 {{ with secret "/secret/consul/tls/defaults" }}{{ .Data.data.ca_cert | base64Decode | writeToFile "./config/certs/defaults/ca-cert.pem" "" "" "0644" }}{{end}}
 {{ with secret "/secret/consul/tls/defaults" }}{{ .Data.data.server_cert | base64Decode | writeToFile "./config/certs/defaults/server-cert.pem" "" "" "0644" }}{{end}}
@@ -58,8 +48,18 @@ auto_encrypt {
   allow_tls = true
 }
 
-acl {
-  enabled                  = true
-  default_policy           = "deny"
-  enable_token_persistence = true
+addresses {
+  http = "127.0.0.1"
+}
+
+ports {
+  https = 8501
+}
+
+ui_config {
+  enabled = true
+}
+
+connect {
+  enabled = true
 }

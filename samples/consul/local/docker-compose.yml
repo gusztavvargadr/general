@@ -29,7 +29,7 @@ services:
         VAULT_VERSION:
     volumes:
       - core-agent-config:/tmp/consul/config/
-      - ./.https:/tmp/consul/https/
+      - ./.https:/tmp/consul/.https/
     environment:
       VAULT_ADDR:
       VAULT_TOKEN:

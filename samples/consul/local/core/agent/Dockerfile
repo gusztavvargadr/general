@@ -12,6 +12,7 @@ COPY --from=vault /bin/vault /bin/
 
 RUN apk add --no-cache jq
 
-ADD ./run.sh ./
+ADD ./*.sh ./
+ADD ./*.hcl ./
 
 CMD [ "agent" ]

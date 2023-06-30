@@ -1,12 +1,12 @@
 locals {
-  acme_server_url = var.acme_server_url
+  server_url = var.server_url
 
   account_private_key_algorithm = var.account_private_key_type
   account_email_address         = var.account_email_address
 }
 
 provider "acme" {
-  server_url = local.acme_server_url
+  server_url = local.server_url
 }
 
 resource "tls_private_key" "account" {

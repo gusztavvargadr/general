@@ -1,5 +1,5 @@
 locals {
-  acme_server_url = var.acme_server_url
+  server_url = var.server_url
 
   account_private_key = var.account_private_key
 
@@ -8,7 +8,7 @@ locals {
 }
 
 provider "acme" {
-  server_url = local.acme_server_url
+  server_url = local.server_url
 }
 
 resource "acme_certificate" "certificate" {
@@ -23,6 +23,6 @@ resource "acme_certificate" "certificate" {
 locals {
   certificate_id = acme_certificate.certificate.id
   certificate_ca_cert = acme_certificate.certificate.issuer_pem
-  certificate_cert = acme_certificate.certificate.certificate_pem
-  certificate_key = acme_certificate.certificate.private_key_pem
+  certificate_server_cert = acme_certificate.certificate.certificate_pem
+  certificate_server_key = acme_certificate.certificate.private_key_pem
 }

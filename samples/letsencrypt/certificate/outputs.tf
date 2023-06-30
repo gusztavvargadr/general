@@ -6,11 +6,11 @@ output "certificate_ca_cert" {
   value = local.certificate_ca_cert
 }
 
-output "certificate_cert" {
-  value = local.certificate_cert
+output "certificate_server_cert" {
+  value = local.certificate_server_cert
 }
 
-output "certificate_key" {
-  value     = local.certificate_key
+output "certificate_server_key" {
+  value     = local.certificate_server_key
   sensitive = true
 }

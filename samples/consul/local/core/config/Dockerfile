@@ -7,7 +7,7 @@ ARG CONSUL_TEMPLATE_VERSION
 ARG VAULT_IMAGE_NAME
 ARG VAULT_VERSION
 
-FROM ${CONSUL_TEMPLATE_IMAGE_NAME}:${CONSUL_TEMPLATE_VERSION} as consul-template
+FROM ${CONSUL_TEMPLATE_IMAGE_NAME}:${CONSUL_TEMPLATE_VERSION} AS consul-template
 
 FROM ${VAULT_IMAGE_NAME}:${VAULT_VERSION} AS vault
 
@@ -18,5 +18,5 @@ COPY --from=vault /bin/vault /bin/
 
 WORKDIR /tmp/consul/
 
+ADD ./*.sh ./
 ADD ./*.hcl ./
-ADD ./run.sh ./

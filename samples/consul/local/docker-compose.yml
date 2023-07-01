@@ -58,7 +58,7 @@ services:
     ports:
       - 8501
     deploy:
-      replicas: ${SERVER_COUNT}
+      replicas: ${CONSUL_SERVER_COUNT}
 
   server-config:
     build:
@@ -83,7 +83,7 @@ services:
     volumes:
       - client-agent-config:/consul/config/
     deploy:
-      replicas: ${CLIENT_COUNT}
+      replicas: ${CONSUL_CLIENT_COUNT}
 
   client-config:
     build:

@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  core-agent:
+    build:
+      context: ./core/agent/
+      args:
+        VAULT_IMAGE_NAME:
+        VAULT_VERSION:
+    volumes:
+      - core-agent-config:/vault/config/
+    ports:
+      - 8200
+    environment:
+      CORE_VAULT_ADDR: ${VAULT_ADDR}
+      CORE_VAULT_TOKEN: ${VAULT_TOKEN}
+
+  core-config:
+    build:
+      context: ./core/config/
+      args:
+        VAULT_IMAGE_NAME:
+        VAULT_VERSION:
+        CONSUL_TEMPLATE_IMAGE_NAME:
+        CONSUL_TEMPLATE_VERSION:
+    volumes:
+      - core-agent-config:/tmp/vault/config/
+      - ./.https:/tmp/vault/.https/
+    environment:
+      VAULT_ADDR:
+      VAULT_TOKEN:
+
+  core-vault:
+    build:
+      context: ./core/vault/
+      args:
+        VAULT_IMAGE_NAME:
+        VAULT_VERSION:
+    ports:
+      - 8200
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID:
+      VAULT_ADDR:
+      VAULT_TOKEN:
+
+volumes:
+  core-agent-config:

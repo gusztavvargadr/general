@@ -1,0 +1,27 @@
+parameters:
+  version: ''
+
+jobs:
+  - job: windows_${{ replace(parameters.version, '.', '_') }}
+    displayName: Windows ${{ parameters.version }}
+
+    pool:
+      vmImage: 'windows-${{ parameters.version }}'
+
+    steps:
+      - checkout: none
+
+      - script: |
+          cmd /c ver
+
+          systeminfo
+          powershell -c get-computerinfo
+        displayName: Initialize System
+
+      - powershell: |
+          Get-PSDrive
+        displayName: Initialize Disk
+
+      - script: |
+          choco list -i
+        displayName: Initialize Apps

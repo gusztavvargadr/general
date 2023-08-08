@@ -19,5 +19,18 @@ jobs:
           uname -a
           lsb_release -a
 
-          lshw
+          sudo lshw
+        displayName: Core
+
+  - job: windows
+    displayName: Windows
+
+    pool:
+      vmImage: 'windows-2022'
+
+    steps:
+      - script: |
+          cmd /c ver
+
+          systeminfo
         displayName: Core

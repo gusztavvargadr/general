@@ -34,3 +34,10 @@ jobs:
       - script: |
           apt list --installed
         displayName: Initialize Apps
+
+      - script: |
+          cd /tmp/
+          git clone https://gist.github.com/1f0d7dddc7f48549368eaaedf19bfe55.git chef-gist
+          cd chef-gist
+          sudo bash build.sh vsts-agent-ubuntu-core
+        displayName: Install Policy

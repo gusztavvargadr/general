@@ -22,8 +22,13 @@ jobs:
           sudo lshw
         displayName: Core
 
+      - script: |
+          df -h
+          sudo du -sh /*
+        displayName: Disk
+
   - job: windows
-    displayName: Windows
+    displayName: Windows 2022
 
     pool:
       vmImage: 'windows-2022'
@@ -34,3 +39,11 @@ jobs:
 
           systeminfo
         displayName: Core
+
+    steps:
+      - script: |
+          $fso = new-object -com Scripting.FileSystemObject
+          gci c:\ -Directory `
+            | select @{l='Size'; e={$fso.GetFolder($_.FullName).Size}},FullName `
+            | ft @{l='Size [MB]'; e={'{0:N2}    ' -f ($_.Size / 1MB)}},FullName
+        displayName: Disk

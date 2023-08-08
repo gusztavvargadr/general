@@ -1,0 +1,23 @@
+trigger:
+  branches:
+    include:
+      - '*'
+  paths:
+    include:
+      - samples/azure/pipeline-agents
+pr: none
+
+jobs:
+  - job: ubuntu
+    displayName: Ubuntu
+
+    pool:
+      vmImage: 'ubuntu-20.04'
+
+    steps:
+      - script: |
+          uname -a
+          lsb_release -a
+
+          lshw
+        displayName: Core

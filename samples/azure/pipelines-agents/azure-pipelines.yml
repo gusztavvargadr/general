@@ -24,11 +24,12 @@ jobs:
 
       - script: |
           df -h
+
           sudo du -sh /*
         displayName: Disk
 
   - job: windows
-    displayName: Windows 2022
+    displayName: Windows
 
     pool:
       vmImage: 'windows-2022'
@@ -40,7 +41,9 @@ jobs:
           systeminfo
         displayName: Core
 
-      - script: |
+      - powershell: |
+          Get-PSDrive
+
           $fso = new-object -com Scripting.FileSystemObject
           gci c:\ -Directory `
             | select @{l='Size'; e={$fso.GetFolder($_.FullName).Size}},FullName `

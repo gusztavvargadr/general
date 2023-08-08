@@ -25,7 +25,9 @@ jobs:
       - script: |
           df -h
 
-          sudo du -sh /*
+          sudo du -sh /usr/*
+          sudo du -sh /opt/*
+          sudo du -sh /var/*
         displayName: Disk
 
   - job: windows

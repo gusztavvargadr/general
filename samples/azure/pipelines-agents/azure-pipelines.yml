@@ -23,18 +23,18 @@ jobs:
 
           lscpu
           lsmem
-          lsblk
           sudo lshw
-        displayName: Core
+        displayName: System
 
       - script: |
           df -h
+          lsblk
 
-          sudo du -sh /* || true
-          sudo du -sh /usr/* || true
-          sudo du -sh /usr/lib/* || true
-          sudo du -sh /usr/local/* || true
-          sudo du -sh /usr/local/lib/* || true
+          sudo rm -Rf /usr/local/lib/android
+          sudo rm -Rf /usr/local/lib/node_modules
+
+          df -h
+          lsblk
         displayName: Disk
 
       - script: |
@@ -55,7 +55,7 @@ jobs:
 
           systeminfo
           powershell -c get-computerinfo
-        displayName: Core
+        displayName: System
 
       - powershell: |
           Get-PSDrive

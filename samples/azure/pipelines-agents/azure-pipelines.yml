@@ -34,6 +34,10 @@ jobs:
           sudo du -sh /usr/share/* || true
         displayName: Disk
 
+      - script: |
+          apt list --installed
+        displayName: Apps
+
   - job: windows
     displayName: Windows
 
@@ -51,3 +55,7 @@ jobs:
       - powershell: |
           Get-PSDrive
         displayName: Disk
+
+      - script: |
+          choco list -li
+        displayName: Apps

@@ -8,8 +8,8 @@ trigger:
 pr: none
 
 jobs:
-  - job: ubuntu
-    displayName: Ubuntu
+  - job: ubuntu_2204
+    displayName: Ubuntu 22.04
 
     pool:
       vmImage: 'ubuntu-22.04'
@@ -24,7 +24,7 @@ jobs:
           lscpu
           lsmem
           sudo lshw
-        displayName: System
+        displayName: Initialize System
 
       - script: |
           df -h
@@ -35,14 +35,47 @@ jobs:
 
           df -h
           lsblk
-        displayName: Disk
+        displayName: Initialize Disk
 
       - script: |
           apt list --installed
-        displayName: Apps
+        displayName: Initialize Apps
 
-  - job: windows
-    displayName: Windows
+  - job: ubuntu_2004
+    displayName: Ubuntu 20.04
+
+    pool:
+      vmImage: 'ubuntu-20.04'
+
+    steps:
+      - checkout: none
+
+      - script: |
+          uname -a
+          lsb_release -a
+
+          lscpu
+          lsmem
+          sudo lshw
+        displayName: Initialize System
+
+      - script: |
+          df -h
+          lsblk
+
+          sudo rm -Rf /usr/local/lib/android
+          sudo rm -Rf /usr/local/lib/node_modules
+
+          df -h
+          lsblk
+        displayName: Initialize Disk
+
+      - script: |
+          apt list --installed
+        displayName: Initialize Apps
+
+  - job: windows_2022
+    displayName: Windows 2022
 
     pool:
       vmImage: 'windows-2022'
@@ -55,12 +88,36 @@ jobs:
 
           systeminfo
           powershell -c get-computerinfo
-        displayName: System
+        displayName: Initialize System
 
       - powershell: |
           Get-PSDrive
-        displayName: Disk
+        displayName: Initialize Disk
 
       - script: |
           choco list -i
-        displayName: Apps
+        displayName: Initialize Apps
+
+  - job: windows_2019
+    displayName: Windows 2019
+
+    pool:
+      vmImage: 'windows-2019'
+
+    steps:
+      - checkout: none
+
+      - script: |
+          cmd /c ver
+
+          systeminfo
+          powershell -c get-computerinfo
+        displayName: Initialize System
+
+      - powershell: |
+          Get-PSDrive
+        displayName: Initialize Disk
+
+      - script: |
+          choco list -i
+        displayName: Initialize Apps

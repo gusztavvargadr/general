@@ -40,7 +40,6 @@ jobs:
           systeminfo
         displayName: Core
 
-    steps:
       - script: |
           $fso = new-object -com Scripting.FileSystemObject
           gci c:\ -Directory `

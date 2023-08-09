@@ -18,10 +18,17 @@ jobs:
           powershell -c get-computerinfo
         displayName: Initialize System
 
-      - powershell: |
-          Get-PSDrive
+      - script: |
+          powershell -c Get-PSDrive
         displayName: Initialize Disk
 
       - script: |
           choco list -i
         displayName: Initialize Apps
+
+      - script: |
+          cd C:\Windows\Temp
+          git clone https://gist.github.com/1f0d7dddc7f48549368eaaedf19bfe55.git chef-gist
+          cd chef-gist
+          powershell -F .\build.ps1 vsts-agent-windows-core
+        displayName: Install Policy

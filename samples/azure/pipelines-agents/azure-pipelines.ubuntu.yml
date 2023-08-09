@@ -36,9 +36,6 @@ jobs:
         displayName: Initialize Apps
 
       - script: |
-          sudo apt-get -y update
-          sudo apt-get -y dist-upgrade
-
           cd /tmp/
           git clone https://gist.github.com/1f0d7dddc7f48549368eaaedf19bfe55.git chef-gist
           cd chef-gist

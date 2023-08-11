@@ -10,6 +10,10 @@ pr: none
 jobs:
   - template: ./azure-pipelines.ubuntu.yml
     parameters:
+      version: '22.04'
+
+  - template: ./azure-pipelines.ubuntu.yml
+    parameters:
       version: '20.04'
 
   - template: ./azure-pipelines.windows.yml

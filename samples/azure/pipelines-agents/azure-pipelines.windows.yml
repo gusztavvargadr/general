@@ -27,7 +27,8 @@ jobs:
         displayName: Initialize Apps
 
       - script: |
-          cd C:\Windows\Temp
+          mkdir tmp
+          cd tmp
           git clone https://gist.github.com/1f0d7dddc7f48549368eaaedf19bfe55.git chef-gist
           cd chef-gist
           powershell -F .\build.ps1 vsts-agent-windows-core

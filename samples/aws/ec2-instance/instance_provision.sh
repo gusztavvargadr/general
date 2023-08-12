@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -euxo pipefail
+set -euo pipefail
 
 cloud-init status --wait
-
-chef-client --version

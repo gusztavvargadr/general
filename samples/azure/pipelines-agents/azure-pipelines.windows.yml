@@ -1,0 +1,35 @@
+parameters:
+  version: ''
+
+jobs:
+  - job: windows_${{ replace(parameters.version, '.', '_') }}
+    displayName: Windows ${{ parameters.version }}
+
+    pool:
+      vmImage: 'windows-${{ parameters.version }}'
+
+    steps:
+      - checkout: none
+
+      - script: |
+          cmd /c ver
+
+          systeminfo
+          powershell -c get-computerinfo
+        displayName: Initialize System
+
+      - script: |
+          powershell -c Get-PSDrive
+        displayName: Initialize Disk
+
+      - script: |
+          choco list -i
+        displayName: Initialize Apps
+
+      - script: |
+          mkdir tmp
+          cd tmp
+          git clone https://gist.github.com/1f0d7dddc7f48549368eaaedf19bfe55.git chef-gist
+          cd chef-gist
+          powershell -F .\build.ps1 vsts-agent-windows-core
+        displayName: Install Policy

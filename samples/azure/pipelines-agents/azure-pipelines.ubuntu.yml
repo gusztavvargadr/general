@@ -1,0 +1,44 @@
+parameters:
+  version: ''
+
+jobs:
+  - job: ubuntu_${{ replace(parameters.version, '.', '_') }}
+    displayName: Ubuntu ${{ parameters.version }}
+
+    pool:
+      vmImage: 'ubuntu-${{ parameters.version }}'
+
+    steps:
+      - checkout: none
+
+      - script: |
+          uname -a
+          lsb_release -a
+
+          lscpu
+          lsmem
+          sudo lshw
+        displayName: Initialize System
+
+      - script: |
+          df -h
+          lsblk
+
+          sudo rm -Rf /usr/local/lib/android
+          sudo rm -Rf /usr/local/lib/node_modules
+
+          df -h
+          lsblk
+        displayName: Initialize Disk
+
+      - script: |
+          apt list --installed
+        displayName: Initialize Apps
+
+      - script: |
+          mkdir tmp
+          cd tmp
+          git clone https://gist.github.com/1f0d7dddc7f48549368eaaedf19bfe55.git chef-gist
+          cd chef-gist
+          bash build.sh
+        displayName: Install Policy

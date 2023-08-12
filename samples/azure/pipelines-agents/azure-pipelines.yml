@@ -4,7 +4,7 @@ trigger:
       - '*'
   paths:
     include:
-      - samples/azure/pipeline-agents
+      - samples/azure/pipelines-agents
 pr: none
 
 jobs:

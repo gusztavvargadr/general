@@ -1,0 +1,25 @@
+trigger:
+  branches:
+    include:
+      - '*'
+  paths:
+    include:
+      - samples/azure/pipeline-agents
+pr: none
+
+jobs:
+  - template: ./azure-pipelines.ubuntu.yml
+    parameters:
+      version: '22.04'
+
+  - template: ./azure-pipelines.ubuntu.yml
+    parameters:
+      version: '20.04'
+
+  - template: ./azure-pipelines.windows.yml
+    parameters:
+      version: '2022'
+
+  - template: ./azure-pipelines.windows.yml
+    parameters:
+      version: '2019'

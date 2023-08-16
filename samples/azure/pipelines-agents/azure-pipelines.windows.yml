@@ -27,9 +27,20 @@ jobs:
         displayName: Initialize Apps
 
       - script: |
-          mkdir tmp
-          cd tmp
-          git clone https://gist.github.com/1f0d7dddc7f48549368eaaedf19bfe55.git chef-gist
-          cd chef-gist
-          powershell -F .\build.ps1 vsts-agent-windows-core
-        displayName: Install Policy
+          choco install -y vagrant
+        displayName: Provision
+
+      - script: |
+          vagrant --version
+
+          vagrant cloud publish --help
+          vagrant box add --help
+        displayName: Test
+
+      # - script: |
+      #     mkdir tmp
+      #     cd tmp
+      #     git clone https://gist.github.com/1f0d7dddc7f48549368eaaedf19bfe55.git chef-gist
+      #     cd chef-gist
+      #     powershell -F .\build.ps1 vsts-agent-windows-core
+      #   displayName: Install Policy

@@ -30,7 +30,7 @@ jobs:
           if ($LASTEXITCODE -eq 3010) { exit 0 }
         displayName: Provision
 
-      - powershell: |
+      - script: |
           refreshenv
 
           vagrant --version

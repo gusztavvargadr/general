@@ -21,14 +21,10 @@ jobs:
         displayName: Initialize System
 
       - script: |
-          df -h
-          lsblk
-
           sudo rm -Rf /usr/local/lib/android
           sudo rm -Rf /usr/local/lib/node_modules
 
           df -h
-          lsblk
         displayName: Initialize Disk
 
       - script: |

@@ -26,7 +26,7 @@ jobs:
           choco list -i
         displayName: Initialize Apps
 
-      - script: |
+      - powershell: |
           choco install -y vagrant
           if ($LASTEXITCODE -eq 3010) { exit 0 }
         displayName: Provision

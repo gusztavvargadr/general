@@ -32,7 +32,9 @@ jobs:
 
       - script: |
           refreshenv
+        displayName: Test
 
+      - script: |
           vagrant --version
 
           vagrant cloud publish --help

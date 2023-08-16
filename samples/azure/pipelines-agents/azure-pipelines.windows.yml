@@ -15,7 +15,6 @@ jobs:
           cmd /c ver
 
           systeminfo
-          powershell -c get-computerinfo
         displayName: Initialize System
 
       - script: |
@@ -31,7 +30,9 @@ jobs:
           if ($LASTEXITCODE -eq 3010) { exit 0 }
         displayName: Provision
 
-      - script: |
+      - powershell: |
+          refreshenv
+
           vagrant --version
 
           vagrant cloud publish --help

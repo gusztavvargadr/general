@@ -15,7 +15,6 @@ jobs:
           cmd /c ver
 
           systeminfo
-          powershell -c get-computerinfo
         displayName: Initialize System
 
       - script: |
@@ -26,10 +25,12 @@ jobs:
           choco list -i
         displayName: Initialize Apps
 
+      - powershell: |
+          choco install -y vagrant
+          if ($LASTEXITCODE -eq 3010) { exit 0 }
+        displayName: Provision
+
       - script: |
-          mkdir tmp
-          cd tmp
-          git clone https://gist.github.com/1f0d7dddc7f48549368eaaedf19bfe55.git chef-gist
-          cd chef-gist
-          powershell -F .\build.ps1 vsts-agent-windows-core
-        displayName: Install Policy
+          vagrant --version
+        displayName: Test
+        workingDirectory: C:\HashiCorp\Vagrant\bin

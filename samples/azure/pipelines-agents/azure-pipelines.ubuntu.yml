@@ -21,14 +21,10 @@ jobs:
         displayName: Initialize System
 
       - script: |
-          df -h
-          lsblk
-
           sudo rm -Rf /usr/local/lib/android
           sudo rm -Rf /usr/local/lib/node_modules
 
           df -h
-          lsblk
         displayName: Initialize Disk
 
       - script: |
@@ -40,5 +36,10 @@ jobs:
           cd tmp
           git clone https://gist.github.com/1f0d7dddc7f48549368eaaedf19bfe55.git chef-gist
           cd chef-gist
-          bash build.sh
-        displayName: Install Policy
+          POLICY_NAME=vagrant bash build.sh
+        displayName: Provision
+
+      - script: |
+          chef-client --version
+          vagrant --version
+        displayName: Test

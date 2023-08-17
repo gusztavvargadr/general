@@ -32,8 +32,5 @@ jobs:
 
       - script: |
           vagrant --version
-
-          vagrant cloud publish --help
-          vagrant box add --help
         displayName: Test
         workingDirectory: C:\HashiCorp\Vagrant\bin

@@ -19,9 +19,8 @@ variable "instance_userdata" {
 }
 
 locals {
-  instance_region = local.region_name
-  instance_name   = local.deployment_name
-
+  instance_name     = local.deployment_name
+  instance_region   = local.region_name
   instance_plan     = var.instance_plan
   instance_image    = var.instance_image
   instance_spot     = var.instance_spot
@@ -31,9 +30,8 @@ locals {
 
 resource "terraform_data" "instance" {
   triggers_replace = [
-    local.instance_region,
     local.instance_name,
-
+    local.instance_region,
     local.instance_plan,
     local.instance_image,
     local.instance_spot,
@@ -43,9 +41,9 @@ resource "terraform_data" "instance" {
 
   provisioner "local-exec" {
     command = format(
-      "cherryctl server create --region %v --hostname %v --plan %v --image %v %v %v --ssh-keys %v --output json | jq -r .id | tee ${path.root}/.terraform/instance-id-${self.id}",
-      local.instance_region,
+      "cherryctl server create --hostname %v --region %v --plan %v --image %v %v %v --ssh-keys %v --output json | jq -r .id | tee ${path.root}/.terraform/instance-id-${self.id}",
       local.instance_name,
+      local.instance_region,
       local.instance_plan,
       local.instance_image,
       local.instance_spot ? "--spot-instance" : "",

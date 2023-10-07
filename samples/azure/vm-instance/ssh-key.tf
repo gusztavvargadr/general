@@ -34,33 +34,16 @@ resource "local_sensitive_file" "ssh_key_private" {
   content  = local.ssh_key_private
 }
 
-resource "terraform_data" "ssh_key" {
-  triggers_replace = [
-    local.ssh_key_name,
-    local.ssh_key_public,
-  ]
+resource "azurerm_ssh_public_key" "ssh_key" {
+  resource_group_name = local.resource_group_name
 
-  provisioner "local-exec" {
-    command = format(
-      "cherryctl ssh-key create --label %v --key '%v' --output json | jq -r .id | tee ${path.root}/.terraform/ssh-key-id-${self.id}",
-      local.ssh_key_name,
-      local.ssh_key_public,
-    )
-  }
-
-  provisioner "local-exec" {
-    command = "cherryctl ssh-key delete --ssh-key-id $(cat ${path.root}/.terraform/ssh-key-id-${self.id}) --force"
-    when    = destroy
-  }
-
-  provisioner "local-exec" {
-    command = "rm ${path.root}/.terraform/ssh-key-id-${self.id}"
-    when    = destroy
-  }
+  name       = local.ssh_key_name
+  location   = local.location_name
+  public_key = local.ssh_key_public
 }
 
 locals {
-  ssh_key_id = trimspace(file("${path.root}/.terraform/ssh-key-id-${terraform_data.ssh_key.id}"))
+  ssh_key_id = azurerm_ssh_public_key.ssh_key.id
 }
 
 output "ssh_key_id" {

@@ -15,8 +15,7 @@ variable "region_name" {
 
 locals {
   deployment_name = "${var.component_name}-${var.environment_name}"
-
-  region_name = var.region_name
+  region_name     = var.region_name
 }
 
 output "deployment_name" {

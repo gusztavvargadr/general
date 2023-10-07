@@ -1,7 +1,7 @@
 locals {
   provision_type        = "ssh"
   provision_host        = local.instance_ip
-  provision_user        = "root"
+  provision_user        = local.core_instance_user
   provision_private_key = local.ssh_key_private
 }
 

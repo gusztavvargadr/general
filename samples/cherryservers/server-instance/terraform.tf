@@ -15,7 +15,7 @@ terraform {
 
   cloud {
     workspaces {
-      tags = ["general-azure-vsts-agent"]
+      tags = ["general-cherryservers-server-instance"]
     }
   }
 }

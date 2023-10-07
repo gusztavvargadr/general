@@ -2,24 +2,24 @@ terraform {
   required_version = "~> 1.5"
 
   required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 4.5.0"
-    }
-
-    http = {
-      source  = "hashicorp/http"
-      version = "~> 2.1.0"
-    }
-
     tls = {
       source  = "hashicorp/tls"
-      version = "~> 3.1.0"
+      version = "~> 4.0"
     }
 
     local = {
       source  = "hashicorp/local"
-      version = "~> 2.2.0"
+      version = "~> 2.4"
+    }
+
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.20"
+    }
+
+    http = {
+      source  = "hashicorp/http"
+      version = "~> 3.4"
     }
   }
 
@@ -31,13 +31,11 @@ terraform {
 }
 
 provider "aws" {
+  region = local.region_name
+
   default_tags {
     tags = {
-      StackName       = var.stack_name
-      ServiceName     = var.service_name
-      ComponentName   = var.component_name
-      EnvironmentName = var.environment_name
-      DeploymentName  = local.deployment_name
+      DeploymentName = local.deployment_name
     }
   }
 }

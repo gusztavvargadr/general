@@ -7,7 +7,7 @@ data "http" "local_ip" {
 }
 
 locals {
-  security_group_ingress_ip = trimspace(data.http.local_ip.body)
+  security_group_ingress_ip = trimspace(data.http.local_ip.response_body)
 }
 
 resource "aws_security_group" "core" {

@@ -1,16 +1,16 @@
 locals {
   instance_name = local.deployment_name
 
-  core_instance_size         = "Standard_B1s"
-  core_instance_user         = "ubuntu"
-  core_instance_disk_type    = "Premium_LRS"
-  core_instance_disk_size    = 127
-  core_instance_disk_caching = "ReadWrite"
+  instance_size         = "Standard_B1s"
+  instance_user         = "ubuntu"
+  instance_disk_type    = "Premium_LRS"
+  instance_disk_size    = 127
+  instance_disk_caching = "ReadWrite"
 
-  core_image_publisher = "Canonical"
-  core_image_offer     = "0001-com-ubuntu-server-focal"
-  core_image_sku       = "20_04-lts-gen2"
-  core_image_version   = "latest"
+  instance_image_publisher = "Canonical"
+  instance_image_offer     = "0001-com-ubuntu-server-focal"
+  instance_image_sku       = "20_04-lts-gen2"
+  instance_image_version   = "latest"
 }
 
 resource "azurerm_public_ip" "instance" {
@@ -52,33 +52,35 @@ resource "azurerm_network_interface_security_group_association" "instance" {
 resource "azurerm_linux_virtual_machine" "instance" {
   resource_group_name = local.resource_group_name
 
-  name           = local.instance_name
-  location       = local.location_name
-  size           = local.core_instance_size
-  admin_username = local.core_instance_user
-  # custom_data    = base64encode(file(local.core_instance_boot_filename))
+  name     = local.instance_name
+  location = local.location_name
 
   source_image_reference {
-    publisher = local.core_image_publisher
-    offer     = local.core_image_offer
-    sku       = local.core_image_sku
-    version   = local.core_image_version
+    publisher = local.instance_image_publisher
+    offer     = local.instance_image_offer
+    sku       = local.instance_image_sku
+    version   = local.instance_image_version
   }
 
-  admin_ssh_key {
-    username   = local.core_instance_user
-    public_key = local.ssh_key_public
-  }
+  size = local.instance_size
 
   os_disk {
-    storage_account_type = local.core_instance_disk_type
-    disk_size_gb         = local.core_instance_disk_size
-    caching              = local.core_instance_disk_caching
+    storage_account_type = local.instance_disk_type
+    disk_size_gb         = local.instance_disk_size
+    caching              = local.instance_disk_caching
   }
 
   network_interface_ids = [
     local.network_interface_id
   ]
+
+  admin_username = local.instance_user
+  # custom_data    = base64encode(file(local.core_instance_boot_filename))
+
+  admin_ssh_key {
+    username   = local.instance_user
+    public_key = local.ssh_key_public
+  }
 }
 
 locals {

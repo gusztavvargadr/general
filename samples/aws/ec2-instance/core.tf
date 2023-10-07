@@ -1,6 +1,6 @@
 variable "component_name" {
   type    = string
-  default = "general-azure-vsts-agent"
+  default = "general-aws-ec2-instance"
 }
 
 variable "environment_name" {
@@ -10,7 +10,7 @@ variable "environment_name" {
 
 variable "region_name" {
   type    = string
-  default = "eu_nord_1"
+  default = "eu-west-1"
 }
 
 locals {

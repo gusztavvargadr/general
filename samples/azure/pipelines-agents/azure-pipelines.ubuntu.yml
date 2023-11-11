@@ -21,10 +21,9 @@ jobs:
         displayName: Initialize System
 
       - script: |
-          sudo rm -Rf /usr/local/lib/android
-          sudo rm -Rf /usr/local/lib/node_modules
-
           df -h
+          # sudo rm -Rf /usr/local/lib/android
+          # sudo rm -Rf /usr/local/lib/node_modules
         displayName: Initialize Disk
 
       - script: |
@@ -32,10 +31,9 @@ jobs:
         displayName: Initialize Apps
 
       - script: |
-          curl -Ls https://gist.github.com/gusztavvargadr/1f0d7dddc7f48549368eaaedf19bfe55/raw/deploy.sh | sudo POLICY_NAME="chef-workstation" bash -s
+          curl -Ls https://gist.github.com/gusztavvargadr/1f0d7dddc7f48549368eaaedf19bfe55/raw/deploy.sh | sudo POLICY_NAME="hello-world" bash -s
         displayName: Provision
 
       - script: |
           chef-client --version
-          chef --version
         displayName: Test

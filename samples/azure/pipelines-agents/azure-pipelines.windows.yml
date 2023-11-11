@@ -31,6 +31,7 @@ jobs:
         displayName: Provision
 
       - script: |
-          chef-client --version
-          chef --version
+          chef-client.bat --version
+          chef.bat --version
         displayName: Test
+        workingDirectory: C:\opscode\chef-workstation

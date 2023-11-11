@@ -11,17 +11,18 @@ jobs:
     steps:
       - checkout: none
 
-      - script: |
+      - powershell: |
           cmd /c ver
 
           systeminfo
+          Get-ComputerInfo
         displayName: Initialize System
 
-      - script: |
-          powershell -c Get-PSDrive
+      - powershell: |
+          Get-PSDrive
         displayName: Initialize Disk
 
-      - script: |
+      - powershell: |
           choco list -i
         displayName: Initialize Apps
 
@@ -30,8 +31,7 @@ jobs:
           . { iwr -useb https://gist.github.com/gusztavvargadr/1f0d7dddc7f48549368eaaedf19bfe55/raw/deploy.ps1 } | iex
         displayName: Provision
 
-      - script: |
-          chef-client.bat --version
-          chef-cli.bat --version
+      - powershell: |
+          C:/opscode/chef-workstation/bin/chef-client.bat --version
+          C:/opscode/chef-workstation/bin/chef-cli.bat --version
         displayName: Test
-        workingDirectory: C:\opscode\chef-workstation\bin

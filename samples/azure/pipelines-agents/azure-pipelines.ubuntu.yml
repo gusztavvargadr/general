@@ -17,7 +17,7 @@ jobs:
 
           lscpu
           lsmem
-          sudo lshw
+          sudo lshw -short
         displayName: Initialize System
 
       - script: |

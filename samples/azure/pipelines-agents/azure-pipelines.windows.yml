@@ -32,6 +32,6 @@ jobs:
 
       - script: |
           chef-client.bat --version
-          chef.bat --version
+          chef-cli.bat --version
         displayName: Test
-        workingDirectory: C:\opscode\chef-workstation
+        workingDirectory: C:\opscode\chef-workstation\bin

@@ -27,9 +27,10 @@ jobs:
         displayName: Initialize Apps
 
       - powershell: |
-          $env:POLICY_NAME="hello-world"
-          . { iwr -useb https://gist.github.com/gusztavvargadr/1f0d7dddc7f48549368eaaedf19bfe55/raw/deploy.ps1 } | iex
-        displayName: Provision
+          . { iwr -useb https://gist.github.com/gusztavvargadr/1f0d7dddc7f48549368eaaedf19bfe55/raw/provision.ps1 } | iex
+        displayName: Provision Hello World
+        env:
+          CHEF_POLICY: hello-world
 
       - powershell: |
           C:/opscode/chef/bin/chef-client.bat --version

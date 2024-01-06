@@ -31,8 +31,10 @@ jobs:
         displayName: Initialize Apps
 
       - script: |
-          curl -Ls https://gist.github.com/gusztavvargadr/1f0d7dddc7f48549368eaaedf19bfe55/raw/deploy.sh | sudo POLICY_NAME="hello-world" bash -s
-        displayName: Provision
+          curl -Ls https://gist.github.com/gusztavvargadr/1f0d7dddc7f48549368eaaedf19bfe55/raw/provision.sh | bash -s
+        displayName: Provision Hello World
+        env:
+          CHEF_POLICY: hello-world
 
       - script: |
           chef-client --version

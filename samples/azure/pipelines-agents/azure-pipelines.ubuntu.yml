@@ -31,7 +31,7 @@ jobs:
         displayName: Initialize Apps
 
       - script: |
-          curl -Ls https://gist.github.com/gusztavvargadr/1f0d7dddc7f48549368eaaedf19bfe55/raw/provision.sh | bash -s
+          curl -Ls https://gist.github.com/gusztavvargadr/1f0d7dddc7f48549368eaaedf19bfe55/raw/provision.sh | sudo -E bash -s
         displayName: Provision Hello World
         env:
           CHEF_POLICY: hello-world

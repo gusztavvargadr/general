@@ -11,26 +11,27 @@ jobs:
     steps:
       - checkout: none
 
-      - script: |
+      - powershell: |
           cmd /c ver
 
           systeminfo
+          Get-ComputerInfo
         displayName: Initialize System
 
-      - script: |
-          powershell -c Get-PSDrive
+      - powershell: |
+          Get-PSDrive
         displayName: Initialize Disk
 
-      - script: |
+      - powershell: |
           choco list -i
         displayName: Initialize Apps
 
       - powershell: |
-          choco install -y vagrant
-          if ($LASTEXITCODE -eq 3010) { exit 0 }
-        displayName: Provision
+          . { iwr -useb https://gist.github.com/gusztavvargadr/1f0d7dddc7f48549368eaaedf19bfe55/raw/provision.ps1 } | iex
+        displayName: Provision Hello World
+        env:
+          CHEF_POLICY: hello-world
 
-      - script: |
-          vagrant --version
+      - powershell: |
+          C:/opscode/chef/bin/chef-client.bat --version
         displayName: Test
-        workingDirectory: C:\HashiCorp\Vagrant\bin

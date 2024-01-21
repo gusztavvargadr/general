@@ -1,6 +1,7 @@
 .terraform*
 terraform.tfstate*
 .ssh
+.https
 
 docker-compose.*override*.yml
 

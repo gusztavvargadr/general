@@ -17,14 +17,13 @@ jobs:
 
           lscpu
           lsmem
-          sudo lshw
+          sudo lshw -short
         displayName: Initialize System
 
       - script: |
-          sudo rm -Rf /usr/local/lib/android
-          sudo rm -Rf /usr/local/lib/node_modules
-
           df -h
+          # sudo rm -Rf /usr/local/lib/android
+          # sudo rm -Rf /usr/local/lib/node_modules
         displayName: Initialize Disk
 
       - script: |
@@ -32,14 +31,11 @@ jobs:
         displayName: Initialize Apps
 
       - script: |
-          mkdir tmp
-          cd tmp
-          git clone https://gist.github.com/1f0d7dddc7f48549368eaaedf19bfe55.git chef-gist
-          cd chef-gist
-          POLICY_NAME=vagrant bash build.sh
-        displayName: Provision
+          curl -Ls https://gist.github.com/gusztavvargadr/1f0d7dddc7f48549368eaaedf19bfe55/raw/provision.sh | sudo -E bash -s
+        displayName: Provision Hello World
+        env:
+          CHEF_POLICY: hello-world
 
       - script: |
           chef-client --version
-          vagrant --version
         displayName: Test

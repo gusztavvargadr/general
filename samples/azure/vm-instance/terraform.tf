@@ -12,9 +12,9 @@ terraform {
       version = "~> 2.4"
     }
 
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.20"
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 3.75.0"
     }
 
     http = {
@@ -25,17 +25,13 @@ terraform {
 
   cloud {
     workspaces {
-      tags = ["general-aws-ec2-instance"]
+      tags = ["general-azure-vm-instance"]
     }
   }
 }
 
-provider "aws" {
-  region = local.region_name
+provider "azurerm" {
+  features {}
 
-  default_tags {
-    tags = {
-      DeploymentName = local.deployment_name
-    }
-  }
+  skip_provider_registration = true
 }

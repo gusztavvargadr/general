@@ -1,75 +1,62 @@
 locals {
-  default_instance_name = local.default_component_name
-  default_instance_type = "t3.nano"
-  default_instance_user = "ubuntu"
-  default_instance_user_data_filename = "${path.module}/instance_user_data.sh"
-  default_instance_provision_filename = "${path.module}/instance_provision.sh"
+  instance_name        = local.deployment_name
+  instance_type        = "t3.nano"
+  instance_volume_type = "gp3"
+  instance_volume_size = 8
+  instance_user        = "ubuntu"
 }
 
-resource "aws_instance" "default" {
-  ami = local.default_ami_id
-  instance_type = local.default_instance_type
-  subnet_id = local.public_subnet_ids[0]
-  vpc_security_group_ids = [ local.default_security_group_id ]
-  key_name = local.default_key_name
-  user_data = file(local.default_instance_user_data_filename)
+locals {
+  ami_owners = ["099720109477"]
+  ami_names  = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+}
 
-  connection {
-    type     = "ssh"
-    user     = local.default_instance_user
-    private_key = file(local.private_key_filename)
-    host     = self.public_ip
+data "aws_ami" "core" {
+  owners      = local.ami_owners
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = local.ami_names
   }
+}
 
-  provisioner "remote-exec" {
-    script = local.default_instance_provision_filename
+locals {
+  ami_id = data.aws_ami.core.id
+}
+
+resource "aws_instance" "core" {
+  ami                    = local.ami_id
+  instance_type          = local.instance_type
+  subnet_id              = local.subnet_ids[0]
+  vpc_security_group_ids = [local.security_group_id]
+  key_name               = local.ssh_key_name
+  # user_data              = file(local.instance_user_data_filename)
+
+  ebs_optimized = true
+  root_block_device {
+    volume_type = local.instance_volume_type
+    volume_size = local.instance_volume_size
   }
 
   tags = {
-    Name = local.default_instance_name
+    Name = local.instance_name
   }
 
   volume_tags = {
-    Name = local.default_instance_name
+    Name = local.instance_name
   }
 }
 
-# resource "aws_spot_instance_request" "default" {
-#   ami = local.default_ami_id
-#   instance_type = local.default_instance_type
-#   subnet_id = local.public_subnet_ids[0]
-#   vpc_security_group_ids = [ local.default_security_group_id ]
-#   key_name = local.default_key_name
-#   user_data = file(local.default_instance_user_data_filename)
-
-#   connection {
-#     type     = "ssh"
-#     user     = local.default_instance_user
-#     private_key = file(local.private_key_filename)
-#     host     = self.public_ip
-#   }
-
-#   provisioner "remote-exec" {
-#     script = local.default_instance_provision_filename
-#   }
-
-#   spot_type = "one-time"
-
-#   tags = {
-#     Name = local.default_instance_name
-#   }
-
-#   volume_tags = {
-#     Name = local.default_instance_name
-#   }
-# }
-
 locals {
-  default_instance_id = aws_instance.default.id
-  default_instance_public_ip = aws_instance.default.public_ip
+  instance_id = aws_instance.core.id
+  instance_ip = aws_instance.core.public_ip
 }
 
-# locals {
-#   default_instance_id = aws_spot_instance_request.default.id
-#   default_instance_public_ip = aws_spot_instance_request.default.public_ip
-# }
+output "instance_id" {
+  value = local.instance_id
+}
+
+output "instance_ip" {
+  value = local.instance_ip
+}

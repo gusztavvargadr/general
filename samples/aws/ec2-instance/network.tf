@@ -2,25 +2,25 @@ locals {
   vpc_name = "default"
 }
 
-data "aws_vpc" "default" {
+data "aws_vpc" "core" {
   tags = {
     Name = local.vpc_name
   }
 }
 
-data "aws_subnets" "public" {
+data "aws_subnets" "core" {
   filter {
-    name = "vpc-id"
-    values = [ data.aws_vpc.default.id ]
+    name   = "vpc-id"
+    values = [data.aws_vpc.core.id]
   }
 
   filter {
-    name = "tag:Name"
-    values = [ "*public*" ]
+    name   = "tag:Name"
+    values = ["*public*"]
   }
 }
 
 locals {
-  default_vpc_id = data.aws_vpc.default.id
-  public_subnet_ids = data.aws_subnets.public.ids
+  vpc_id     = data.aws_vpc.core.id
+  subnet_ids = data.aws_subnets.core.ids
 }

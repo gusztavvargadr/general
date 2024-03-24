@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -uo pipefail
-
 sudo cp ./config.hcl /etc/nomad.d/nomad.hcl
 sudo chown -R nomad:nomad /etc/nomad.d
 
@@ -11,4 +9,4 @@ sleep 15s
 
 export NOMAD_ADDR="http://127.0.0.1:4646"
 
-nomad status
+nomad node status

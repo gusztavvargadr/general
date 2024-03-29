@@ -8,7 +8,7 @@ job "vault-development" {
       driver = "docker"
 
       config {
-        image = "hashicorp/vault:1.15.6"
+        image = "hashicorp/vault:1.16.0"
 
         network_mode = "host"
 

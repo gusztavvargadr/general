@@ -8,7 +8,7 @@ job "consul-development" {
       driver = "docker"
 
       config {
-        image = "hashicorp/consul:1.18.0"
+        image = "hashicorp/consul:1.18.1"
 
         network_mode = "host"
 
@@ -20,7 +20,7 @@ job "consul-development" {
 
       resources {
         cpu    = 100
-        memory = 250
+        memory = 200
       }
     }
   }

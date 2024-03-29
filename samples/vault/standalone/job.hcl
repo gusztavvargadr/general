@@ -29,7 +29,7 @@ EOH
       }
 
       config {
-        image = "hashicorp/vault:1.15.6"
+        image = "hashicorp/vault:1.16.0"
 
         volumes = [
           "local/config:/vault/config",

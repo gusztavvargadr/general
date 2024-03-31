@@ -1,9 +1,10 @@
 locals {
-  instance_name        = local.deployment_name
-  instance_type        = "t3.nano"
-  instance_volume_type = "gp3"
-  instance_volume_size = 8
-  instance_user        = "ubuntu"
+  instance_name               = local.deployment_name
+  instance_type               = "t3.small"
+  instance_volume_type        = "gp3"
+  instance_volume_size        = 63
+  instance_user               = "ubuntu"
+  instance_user_data_filename = "${path.root}/userdata.sh"
 }
 
 locals {
@@ -31,7 +32,7 @@ resource "aws_instance" "core" {
   subnet_id              = local.subnet_ids[0]
   vpc_security_group_ids = [local.security_group_id]
   key_name               = local.ssh_key_name
-  # user_data              = file(local.instance_user_data_filename)
+  user_data              = file(local.instance_user_data_filename)
 
   ebs_optimized = true
   root_block_device {

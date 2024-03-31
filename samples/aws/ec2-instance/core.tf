@@ -1,23 +1,28 @@
-variable "component_name" {
+variable "stack" {
   type    = string
-  default = "general-aws-ec2-instance"
+  default = "gusztavvargadr-general"
 }
 
-variable "environment_name" {
+variable "service" {
   type    = string
-  default = "local"
+  default = "aws-ec2-instance"
 }
 
-variable "region_name" {
+variable "region" {
   type    = string
   default = "eu-west-1"
 }
 
 locals {
-  deployment_name = "${var.component_name}-${var.environment_name}"
-  region_name     = var.region_name
+  stack_name = var.stack
+  service_name = var.service
+  environment_name = terraform.workspace
+
+  deployment_name = "${local.stack_name}-${local.service_name}-${local.environment_name}"
+
+  region_name     = var.region
 }
 
-output "deployment_name" {
+output "deployment" {
   value = local.deployment_name
 }

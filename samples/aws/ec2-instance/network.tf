@@ -1,17 +1,19 @@
 locals {
-  vpc_name = "default"
-}
-
-data "aws_vpc" "core" {
-  tags = {
-    Name = local.vpc_name
+  network_options = {
+    vpc_name = "default"
   }
 }
 
-data "aws_subnets" "core" {
+data "aws_vpc" "default" {
+  tags = {
+    Name = local.network_options.vpc_name
+  }
+}
+
+data "aws_subnets" "default" {
   filter {
     name   = "vpc-id"
-    values = [data.aws_vpc.core.id]
+    values = [data.aws_vpc.default.id]
   }
 
   filter {
@@ -21,6 +23,12 @@ data "aws_subnets" "core" {
 }
 
 locals {
-  vpc_id     = data.aws_vpc.core.id
-  subnet_ids = data.aws_subnets.core.ids
+  network = {
+    vpc_id     = data.aws_vpc.default.id
+    subnet_ids = data.aws_subnets.default.ids
+  }
+}
+
+output "network" {
+  value = local.network
 }

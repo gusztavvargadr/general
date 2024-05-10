@@ -1,28 +1,33 @@
 locals {
-  ssh_key_name = local.deployment_name
+  ssh_key_options = {
+    name      = local.deployment.name
+    algorithm = "RSA"
+  }
 }
 
-data "http" "ssh_key_public" {
-  url = "https://github.com/gusztavvargadr.keys"
+resource "tls_private_key" "default" {
+  algorithm = local.ssh_key_options.algorithm
 }
 
-locals {
-  ssh_key_public = trimspace(data.http.ssh_key_public.response_body)
-}
-
-resource "aws_key_pair" "ssh_key" {
-  key_name   = local.ssh_key_name
-  public_key = local.ssh_key_public
+resource "aws_key_pair" "default" {
+  key_name   = local.ssh_key_options.name
+  public_key = trimspace(tls_private_key.default.public_key_openssh)
 
   tags = {
-    Name = local.ssh_key_name
+    Name = local.ssh_key_options.name
   }
 }
 
 locals {
-  ssh_key_id = aws_key_pair.ssh_key.id
+  ssh_key = {
+    id      = aws_key_pair.default.id
+    name    = aws_key_pair.default.key_name
+    public  = aws_key_pair.default.public_key
+    private = trimspace(tls_private_key.default.private_key_pem)
+  }
 }
 
-output "ssh_key_id" {
-  value = local.ssh_key_id
+output "ssh_key" {
+  value     = local.ssh_key
+  sensitive = true
 }

@@ -7,5 +7,5 @@ echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://
 
 sudo apt-get -y update
 
-sudo apt-get -y install wget gpg coreutils jq
-sudo apt-get -y install terraform nomad vault consul consul-template
+sudo apt-get -y install zip unzip jq net-tools
+sudo apt-get -y install terraform consul-template consul vault nomad

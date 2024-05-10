@@ -1,15 +1,6 @@
 locals {
-  instance_name               = local.deployment_name
-  instance_type               = "t3.small"
-  instance_volume_type        = "gp3"
-  instance_volume_size        = 63
-  instance_user               = "ubuntu"
-  instance_user_data_filename = "${path.root}/userdata.sh"
-}
-
-locals {
   ami_owners = ["099720109477"]
-  ami_names  = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  ami_names  = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
 }
 
 data "aws_ami" "core" {
@@ -23,41 +14,49 @@ data "aws_ami" "core" {
 }
 
 locals {
-  ami_id = data.aws_ami.core.id
+  instance_options = {
+    name               = local.deployment.name
+    ami                = data.aws_ami.core.id
+    type               = "t3.nano"
+    volume_type        = "gp3"
+    volume_size        = 8
+    user               = "ubuntu"
+    user_data_filename = "${path.root}/userdata.sh"
+  }
 }
 
-resource "aws_instance" "core" {
-  ami                    = local.ami_id
-  instance_type          = local.instance_type
-  subnet_id              = local.subnet_ids[0]
-  vpc_security_group_ids = [local.security_group_id]
-  key_name               = local.ssh_key_name
-  user_data              = file(local.instance_user_data_filename)
+resource "aws_instance" "default" {
+  ami                    = local.instance_options.ami
+  instance_type          = local.instance_options.type
+  subnet_id              = local.network.subnet_ids[0]
+  vpc_security_group_ids = [local.security_group.id]
+  key_name               = local.ssh_key.name
+  user_data              = file(local.instance_options.user_data_filename)
 
   ebs_optimized = true
   root_block_device {
-    volume_type = local.instance_volume_type
-    volume_size = local.instance_volume_size
+    volume_type = local.instance_options.volume_type
+    volume_size = local.instance_options.volume_size
   }
 
   tags = {
-    Name = local.instance_name
+    Name = local.instance_options.name
   }
 
   volume_tags = {
-    Name = local.instance_name
+    Name = local.instance_options.name
   }
 }
 
 locals {
-  instance_id = aws_instance.core.id
-  instance_ip = aws_instance.core.public_ip
+  instance = {
+    id   = aws_instance.default.id
+    name = local.instance_options.name
+    ip   = aws_instance.default.public_ip
+    user = local.instance_options.user
+  }
 }
 
-output "instance_id" {
-  value = local.instance_id
-}
-
-output "instance_ip" {
-  value = local.instance_ip
+output "instance" {
+  value = local.instance
 }

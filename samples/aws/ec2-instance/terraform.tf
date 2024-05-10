@@ -1,32 +1,37 @@
 terraform {
-  required_version = "~> 1.5"
+  required_version = "~> 1.8"
 
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.20"
+      version = "~> 5.49"
     }
 
     http = {
       source  = "hashicorp/http"
       version = "~> 3.4"
     }
+
+    tls = {
+      source  = "hashicorp/tls"
+      version = "~> 4.0"
+    }
   }
 
   backend "consul" {
-    path = "gusztavvargadr-general-aws-ec2-instance/terraform"
+    path = "gusztavvargadr-general/aws-ec2-instance/terraform"
   }
 }
 
 provider "aws" {
-  region = local.region_name
+  region = local.deployment.region
 
   default_tags {
     tags = {
-      Stack = local.stack_name
-      Serice = local.service_name
-      Environment = local.environment_name
-      Deployment = local.deployment_name
+      Deployment  = local.deployment.name
+      Stack       = local.deployment.stack
+      Service     = local.deployment.service
+      Environment = local.deployment.environment
     }
   }
 }

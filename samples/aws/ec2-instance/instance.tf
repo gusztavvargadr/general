@@ -1,22 +1,16 @@
-locals {
-  ami_owners = ["099720109477"]
-  ami_names  = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
-}
+module "ami" {
+  source = "../../../src/aws/ec2-ami-data"
 
-data "aws_ami" "core" {
-  owners      = local.ami_owners
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = local.ami_names
+  ami_options = {
+    owner = "amazon"
+    name  = "ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"
   }
 }
 
 locals {
   instance_options = {
     name               = local.deployment.name
-    ami                = data.aws_ami.core.id
+    ami                = module.ami.ami.id
     type               = "t3.nano"
     volume_type        = "gp3"
     volume_size        = 8
@@ -37,6 +31,10 @@ resource "aws_instance" "default" {
   root_block_device {
     volume_type = local.instance_options.volume_type
     volume_size = local.instance_options.volume_size
+  }
+
+  instance_market_options {
+    market_type = "spot"
   }
 
   tags = {

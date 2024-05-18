@@ -29,7 +29,7 @@ EOH
       }
 
       config {
-        image = "hashicorp/vault:1.16.0"
+        image = "hashicorp/vault:1.16.2"
 
         volumes = [
           "local/config:/vault/config",
@@ -49,8 +49,8 @@ EOH
       }
 
       resources {
-        cpu    = 100
-        memory = 500
+        cpu    = 200
+        memory = 200
       }
     }
   }

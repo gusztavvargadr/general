@@ -20,7 +20,7 @@ job "consul-development" {
 
       resources {
         cpu    = 100
-        memory = 200
+        memory = 100
       }
     }
   }

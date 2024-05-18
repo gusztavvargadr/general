@@ -19,7 +19,8 @@ terraform {
   }
 
   backend "consul" {
-    path = "gusztavvargadr-general/aws-ec2-instance/terraform"
+    path = "gusztavvargadr-general.aws-ec2-instance/terraform/state"
+    gzip = true
   }
 }
 
@@ -28,7 +29,6 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Deployment  = local.deployment.name
       Stack       = local.deployment.stack
       Service     = local.deployment.service
       Environment = local.deployment.environment

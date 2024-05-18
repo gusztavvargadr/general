@@ -8,7 +8,7 @@ job "vault-development" {
       driver = "docker"
 
       config {
-        image = "hashicorp/vault:1.16.0"
+        image = "hashicorp/vault:1.16.2"
 
         network_mode = "host"
 
@@ -22,7 +22,7 @@ job "vault-development" {
 
       resources {
         cpu    = 100
-        memory = 500
+        memory = 100
       }
     }
   }

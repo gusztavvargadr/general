@@ -3,6 +3,9 @@
 nomad job run ./job.hcl
 
 export VAULT_ADDR="http://127.0.0.1:8200"
+if [ -f ./artifacts/init.json ]; then
+  export VAULT_TOKEN=$(jq -r .root_token ./artifacts/init.json)
+fi
 
 vault status
 

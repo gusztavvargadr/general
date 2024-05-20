@@ -1,19 +1,18 @@
 locals {
   provision_options = {
     type        = "ssh"
-    host        = local.instance.ip
+    host        = local.instance.public_ip
     user        = local.instance.user
-    private_key = local.ssh_key.private
+    private_key = module.ssh_key.ssh_key.private
 
-    script = [
-      "sudo cloud-init status --wait",
-    ]
+    script = "${path.root}/provision.sh"
   }
 }
 
 resource "terraform_data" "provision" {
   triggers_replace = [
-    local.provision_options.host
+    local.provision_options.host,
+    md5(file(local.provision_options.script))
   ]
 
   connection {
@@ -24,6 +23,6 @@ resource "terraform_data" "provision" {
   }
 
   provisioner "remote-exec" {
-    inline = local.provision_options.script
+    script = local.provision_options.script
   }
 }

@@ -1,34 +1,43 @@
-locals {
-  network_options = {
-    vpc_name = "default"
-  }
+module "vpc" {
+  source = "../../../src/aws/vpc-data"
 }
 
-data "aws_vpc" "default" {
+locals {
+  vpc = module.vpc.vpc
+}
+
+output "vpc" {
+  value = local.vpc
+}
+
+data "http" "local_ip" {
+  url = "https://ifconfig.me"
+}
+
+locals {
+  local_ip = trimspace(data.http.local_ip.response_body)
+}
+
+resource "aws_vpc_security_group_ingress_rule" "ipv4_ssh" {
+  security_group_id = local.security_group.id
+
+  ip_protocol = "tcp"
+  cidr_ipv4   = "${local.local_ip}/32"
+  from_port   = 22
+  to_port     = 22
+
   tags = {
-    Name = local.network_options.vpc_name
+    Name = "ipv4-ssh"
   }
 }
 
-data "aws_subnets" "default" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.default.id]
-  }
+resource "aws_vpc_security_group_egress_rule" "ipv4_all" {
+  security_group_id = local.security_group.id
 
-  filter {
-    name   = "tag:Name"
-    values = ["*public*"]
-  }
-}
+  ip_protocol = "-1"
+  cidr_ipv4   = "0.0.0.0/0"
 
-locals {
-  network = {
-    vpc_id     = data.aws_vpc.default.id
-    subnet_ids = data.aws_subnets.default.ids
+  tags = {
+    Name = "ipv4-all"
   }
-}
-
-output "network" {
-  value = local.network
 }

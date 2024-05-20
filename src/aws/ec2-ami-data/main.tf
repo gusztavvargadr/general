@@ -9,15 +9,15 @@ terraform {
   }
 }
 
-variable "ami_options" {
+variable "ami" {
   type = object({
-    owner = string
-    name  = string
+    owner = optional(string, "amazon")
+    name = string
   })
 }
 
 locals {
-  ami_options = var.ami_options
+  ami_options = var.ami
 }
 
 data "aws_ami" "default" {
@@ -34,7 +34,6 @@ data "aws_ami" "default" {
 locals {
   ami = {
     id   = data.aws_ami.default.id
-    arn  = data.aws_ami.default.arn
     name = data.aws_ami.default.name
   }
 }

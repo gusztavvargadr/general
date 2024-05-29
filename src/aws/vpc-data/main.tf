@@ -41,7 +41,7 @@ data "aws_subnets" "public" {
 locals {
   vpc = {
     id   = data.aws_vpc.default.id
-    name = local.vpc_options.name
+    name = data.aws_vpc.default.tags.Name
 
     public_subnet_ids = data.aws_subnets.public.ids
   }

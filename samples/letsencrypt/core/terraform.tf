@@ -27,3 +27,7 @@ terraform {
 provider "acme" {
   server_url = local.acme.server
 }
+
+provider "vault" {
+  skip_child_token = true
+}

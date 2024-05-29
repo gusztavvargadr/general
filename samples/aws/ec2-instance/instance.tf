@@ -1,20 +1,35 @@
+locals {
+  instance_options = {
+    count = var.instances
+  }
+}
+
 resource "aws_instance" "default" {
   launch_template {
     id = local.launch_template.id
   }
 
-  subnet_id = local.vpc.public_subnet_ids[0]
+  subnet_id = local.vpc.public_subnet_ids[count.index % length(local.vpc.public_subnet_ids)]
+
+  tags = {
+    Name = local.deployment.name
+  }
+
+  lifecycle {
+    ignore_changes = [
+      user_data
+    ]
+  }
+
+  count = local.instance_options.count
 }
 
 locals {
-  instance = {
-    id        = aws_instance.default.id
-    name      = aws_instance.default.tags_all.Name
-    public_ip = aws_instance.default.public_ip
-    user      = local.ami_options.user
-  }
-}
-
-output "instance" {
-  value = local.instance
+  instances = [for instance in aws_instance.default : {
+    id         = instance.id
+    name       = instance.tags.Name
+    public_ip  = instance.public_ip
+    private_ip = instance.private_ip
+    user       = local.ami_options.user
+  }]
 }

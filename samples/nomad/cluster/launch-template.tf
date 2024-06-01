@@ -29,6 +29,8 @@ locals {
     name = local.deployment.name
 
     ami_id = local.ami.id
+    
+    instance_type = local.bootstrap_options.instance_type
 
     vpc_id = local.vpc.id
 
@@ -77,4 +79,35 @@ resource "aws_vpc_security_group_ingress_rule" "ipv4_ssh" {
   tags = {
     Name = "ipv4-ssh"
   }
+}
+
+resource "aws_vpc_security_group_ingress_rule" "ipv4_nomad_cluster" {
+  security_group_id = local.launch_template.security_group_id
+
+  ip_protocol = "tcp"
+  referenced_security_group_id = local.launch_template.security_group_id
+  from_port   = 4646
+  to_port     = 4648
+
+  tags = {
+    Name = "ipv4-nomad-cluster"
+  }
+}
+
+resource "aws_vpc_security_group_ingress_rule" "ipv4_nomad_ui" {
+  security_group_id = local.launch_template.security_group_id
+
+  ip_protocol = "tcp"
+  cidr_ipv4   = "${local.local_ip}/32"
+  from_port   = 4646
+  to_port     = 4646
+
+  tags = {
+    Name = "ipv4-nomad-ui"
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "s3" {
+  role       = local.launch_template.role_name
+  policy_arn = aws_iam_policy.s3.arn
 }

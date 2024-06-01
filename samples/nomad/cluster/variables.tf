@@ -1,7 +1,7 @@
 variable "deployment" {
   type = object({
     stack       = optional(string, "gusztavvargadr-general")
-    service     = optional(string, "aws-ec2-instance")
+    service     = optional(string, "nomad-cluster")
     environment = optional(string)
   })
   default = {}
@@ -22,9 +22,26 @@ variable "ami" {
   default = {}
 }
 
-variable "instance" {
+variable "bootstrap" {
   type = object({
-    count = optional(number, 1)
+    instance_count = optional(number, 0)
+    instance_type  = optional(string, "t3.micro")
+  })
+  default = {}
+}
+
+variable "server" {
+  type = object({
+    instance_count = optional(number, 3)
+    instance_type  = optional(string, "t3.micro")
+  })
+  default = {}
+}
+
+variable "client" {
+  type = object({
+    instance_count = optional(number, 3)
+    instance_type  = optional(string, "t3.micro")
   })
   default = {}
 }

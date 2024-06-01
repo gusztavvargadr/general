@@ -78,4 +78,3 @@ resource "aws_vpc_security_group_ingress_rule" "ipv4_ssh" {
     Name = "ipv4-ssh"
   }
 }
-

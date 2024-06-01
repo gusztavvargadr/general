@@ -22,7 +22,9 @@ variable "ami" {
   default = {}
 }
 
-variable "instances" {
-  type    = number
-  default = 1
+variable "instance" {
+  type = object({
+    count = optional(number, 1)
+  })
+  default = {}
 }

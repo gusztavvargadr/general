@@ -1,7 +1,5 @@
 locals {
-  instance_options = {
-    count = var.instances
-  }
+  instance_options = var.instance
 }
 
 resource "aws_instance" "default" {
@@ -30,6 +28,5 @@ locals {
     name       = instance.tags.Name
     public_ip  = instance.public_ip
     private_ip = instance.private_ip
-    user       = local.ami_options.user
   }]
 }

@@ -1,7 +1,5 @@
 locals {
-  autoscaling_group_options = {
-    count = var.instances
-  }
+  instance_options = var.instance
 }
 
 resource "aws_autoscaling_group" "default" {
@@ -13,9 +11,9 @@ resource "aws_autoscaling_group" "default" {
 
   vpc_zone_identifier = local.vpc.public_subnet_ids
 
-  min_size         = local.autoscaling_group_options.count
-  max_size         = local.autoscaling_group_options.count
-  desired_capacity = local.autoscaling_group_options.count
+  min_size         = local.instance_options.count
+  max_size         = local.instance_options.count
+  desired_capacity = local.instance_options.count
 
   tag {
     key                 = "Name"
@@ -26,8 +24,8 @@ resource "aws_autoscaling_group" "default" {
   dynamic "tag" {
     for_each = local.aws.tags
     content {
-      key = tag.key
-      value = tag.value
+      key                 = tag.key
+      value               = tag.value
       propagate_at_launch = false
     }
   }
@@ -38,4 +36,16 @@ locals {
     id   = aws_autoscaling_group.default.id
     name = aws_autoscaling_group.default.name
   }
+}
+
+data "aws_instances" "default" {
+  instance_tags = {
+    Name = local.deployment.name
+  }
+}
+
+locals {
+  instances = [for public_ip in data.aws_instances.default.public_ips : {
+    public_ip  = public_ip
+  }]
 }

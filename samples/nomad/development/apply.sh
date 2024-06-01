@@ -7,4 +7,6 @@ sleep 1s
 
 export NOMAD_ADDR="http://127.0.0.1:4646"
 
+nomad server members
 nomad node status
+nomad status

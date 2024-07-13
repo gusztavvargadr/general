@@ -24,7 +24,7 @@ variable "ami" {
 
 variable "bootstrap" {
   type = object({
-    instance_count = optional(number, 0)
+    instance_count = optional(number, 1)
     instance_type  = optional(string, "t3.micro")
   })
   default = {}
@@ -32,7 +32,7 @@ variable "bootstrap" {
 
 variable "server" {
   type = object({
-    instance_count = optional(number, 3)
+    instance_count = optional(number, 0)
     instance_type  = optional(string, "t3.micro")
   })
   default = {}
@@ -40,7 +40,7 @@ variable "server" {
 
 variable "client" {
   type = object({
-    instance_count = optional(number, 3)
+    instance_count = optional(number, 0)
     instance_type  = optional(string, "t3.micro")
   })
   default = {}

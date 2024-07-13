@@ -11,7 +11,7 @@ locals {
 resource "terraform_data" "provision" {
   triggers_replace = [
     local.instances[count.index].public_ip,
-    md5(file(local.provision_options.script))
+    filemd5(local.provision_options.script)
   ]
 
   connection {

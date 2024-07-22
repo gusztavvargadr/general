@@ -1,5 +1,9 @@
 vault {
   renew_token = false
+
+  retry {
+    enabled = false
+  }
 }
 
 template {

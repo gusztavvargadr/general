@@ -2,6 +2,7 @@
 
 sudo cp ./config.hcl /etc/nomad.d/nomad.hcl
 sudo chown -R nomad:nomad /etc/nomad.d
+sudo chmod -R o-rw /etc/nomad.d
 
 sudo systemctl enable nomad.service
 sudo systemctl start nomad.service

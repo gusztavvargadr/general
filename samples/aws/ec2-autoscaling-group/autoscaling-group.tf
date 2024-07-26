@@ -45,7 +45,7 @@ data "aws_instances" "default" {
 }
 
 locals {
-  instances = [for public_ip in data.aws_instances.default.public_ips : {
-    public_ip  = public_ip
+  instances = [for ipv4_public in data.aws_instances.default.public_ips : {
+    ipv4_public = ipv4_public
   }]
 }

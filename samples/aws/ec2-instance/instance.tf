@@ -24,9 +24,9 @@ resource "aws_instance" "default" {
 
 locals {
   instances = [for instance in aws_instance.default : {
-    id         = instance.id
-    name       = instance.tags.Name
-    public_ip  = instance.public_ip
-    private_ip = instance.private_ip
+    id           = instance.id
+    name         = instance.tags.Name
+    ipv4_public  = instance.public_ip
+    ipv4_private = instance.private_ip
   }]
 }

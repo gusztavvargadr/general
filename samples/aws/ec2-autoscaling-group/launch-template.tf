@@ -58,19 +58,19 @@ resource "aws_vpc_security_group_egress_rule" "ipv4_all" {
   }
 }
 
-data "http" "local_ip" {
-  url = "https://ifconfig.me"
+data "http" "ipv4_local" {
+  url = "https://ipv4.icanhazip.com"
 }
 
 locals {
-  local_ip = trimspace(data.http.local_ip.response_body)
+  ipv4_local = trimspace(data.http.ipv4_local.response_body)
 }
 
 resource "aws_vpc_security_group_ingress_rule" "ipv4_ssh" {
   security_group_id = local.launch_template.security_group_id
 
   ip_protocol = "tcp"
-  cidr_ipv4   = "${local.local_ip}/32"
+  cidr_ipv4   = "${local.ipv4_local}/32"
   from_port   = 22
   to_port     = 22
 

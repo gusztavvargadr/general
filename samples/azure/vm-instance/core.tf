@@ -5,7 +5,7 @@ variable "component_name" {
 
 variable "environment_name" {
   type    = string
-  default = "local"
+  default = "default"
 }
 
 variable "location_name" {

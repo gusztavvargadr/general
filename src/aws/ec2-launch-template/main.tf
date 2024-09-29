@@ -15,11 +15,11 @@ variable "launch_template" {
 
     ami_id = string
 
-    instance_type = optional(string, "t3.nano")
+    instance_type = optional(string, "t3.micro")
     instance_spot = optional(bool, true)
 
     volume_type = optional(string, "gp3")
-    volume_size = optional(number, 8)
+    volume_size = optional(number, 31)
 
     vpc_id = string
 

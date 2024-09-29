@@ -28,7 +28,7 @@ locals {
 }
 
 data "http" "local_ip" {
-  url = "https://ifconfig.me"
+  url = "https://ipv4.icanhazip.com"
 }
 
 locals {

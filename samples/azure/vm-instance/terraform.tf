@@ -14,7 +14,7 @@ terraform {
 
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 3.75.0"
+      version = "~> 4.3"
     }
 
     http = {
@@ -22,16 +22,10 @@ terraform {
       version = "~> 3.4"
     }
   }
-
-  cloud {
-    workspaces {
-      tags = ["general-azure-vm-instance"]
-    }
-  }
 }
 
 provider "azurerm" {
   features {}
 
-  skip_provider_registration = true
+  resource_provider_registrations = "none"
 }

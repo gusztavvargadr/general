@@ -1,15 +1,16 @@
 locals {
   instance_name = local.deployment_name
 
-  instance_size         = "Standard_B1s"
+  instance_size         = "Standard_B2ts_v2"
   instance_user         = "ubuntu"
   instance_disk_type    = "Premium_LRS"
-  instance_disk_size    = 127
+  instance_disk_size    = 31
   instance_disk_caching = "ReadWrite"
+  # instance_disk_caching = "ReadOnly"
 
   instance_image_publisher = "Canonical"
-  instance_image_offer     = "0001-com-ubuntu-server-focal"
-  instance_image_sku       = "20_04-lts-gen2"
+  instance_image_offer     = "0001-com-ubuntu-server-jammy"
+  instance_image_sku       = "22_04-lts-gen2"
   instance_image_version   = "latest"
 }
 
@@ -55,6 +56,8 @@ resource "azurerm_linux_virtual_machine" "instance" {
   name     = local.instance_name
   location = local.location_name
 
+  # source_image_id = "/subscriptions/c81f8944-4346-498b-9080-4e3ef050b052/resourceGroups/vsts-agents/providers/Microsoft.Compute/images/ubuntu-virtualbox-240920"
+
   source_image_reference {
     publisher = local.instance_image_publisher
     offer     = local.instance_image_offer
@@ -63,11 +66,18 @@ resource "azurerm_linux_virtual_machine" "instance" {
   }
 
   size = local.instance_size
+  priority = "Spot"
+  eviction_policy = "Delete"
 
   os_disk {
     storage_account_type = local.instance_disk_type
     disk_size_gb         = local.instance_disk_size
     caching              = local.instance_disk_caching
+
+    # diff_disk_settings {
+    #   option = "Local"
+    #   placement = "ResourceDisk"
+    # }
   }
 
   network_interface_ids = [
@@ -75,12 +85,13 @@ resource "azurerm_linux_virtual_machine" "instance" {
   ]
 
   admin_username = local.instance_user
-  # custom_data    = base64encode(file(local.core_instance_boot_filename))
 
   admin_ssh_key {
     username   = local.instance_user
     public_key = local.ssh_key_public
   }
+
+  custom_data  = base64encode(file("${path.root}/user-data.sh"))
 }
 
 locals {

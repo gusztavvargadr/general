@@ -3,6 +3,7 @@ locals {
   provision_host        = local.instance_ip
   provision_user        = local.instance_user
   provision_private_key = local.ssh_key_private
+  provision_script      = "${path.root}/provision.sh"
 }
 
 resource "terraform_data" "provision" {
@@ -18,9 +19,6 @@ resource "terraform_data" "provision" {
   }
 
   provisioner "remote-exec" {
-    inline = [
-      "sudo cloud-init status --wait",
-      "curl -Ls https://gist.github.com/gusztavvargadr/1f0d7dddc7f48549368eaaedf19bfe55/raw/deploy.sh | sudo bash -s",
-    ]
+    script = local.provision_script
   }
 }

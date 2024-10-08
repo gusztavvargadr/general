@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-sudo kill $(cat ./artifacts/nomad.pid)
+pushd ~/opt/nomad
+
+kill $(cat ./nomad.pid)
 sleep 1s
 
-sudo rm -Rf ./artifacts
+popd
+
+sudo rm -Rf ~/opt/nomad

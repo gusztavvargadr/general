@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
-mkdir -p ./artifacts
-sudo nohup nomad agent -dev > ./artifacts/nomad.log 2>&1 &
-echo $! > ./artifacts/nomad.pid
+mkdir -p ~/opt/nomad
+pushd ~/opt/nomad
+
+nohup nomad agent -dev > ./nomad.log 2>&1 &
+echo $! > ./nomad.pid
 sleep 1s
+
+popd
 
 export NOMAD_ADDR="http://127.0.0.1:4646"
 

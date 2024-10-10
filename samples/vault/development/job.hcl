@@ -20,6 +20,10 @@ job "vault-development" {
         ]
       }
 
+      env {
+        SKIP_SETCAP = "true"
+      }
+
       resources {
         cpu    = 200
         memory = 256

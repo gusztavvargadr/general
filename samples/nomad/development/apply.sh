@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 
-mkdir -p ~/opt/nomad
-pushd ~/opt/nomad
+mkdir -p ~/opt/nomad-development
+pushd ~/opt/nomad-development
 
-nohup nomad agent -dev > ./nomad.log 2>&1 &
+mkdir -p ./config
+# cat <<EOF > ./config/client.hcl
+# client {
+#   cpu_total_compute = 1000
+# }
+# EOF
+
+nohup nomad agent -dev -config=./config > ./nomad.log 2>&1 &
 echo $! > ./nomad.pid
-sleep 1s
+sleep 5s
 
 popd
 

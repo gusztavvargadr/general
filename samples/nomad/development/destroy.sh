@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
-pushd ~/opt/nomad
+pushd ~/opt/nomad-development
 
 kill $(cat ./nomad.pid)
-sleep 1s
+sleep 5s
 
 popd
 
-sudo rm -Rf ~/opt/nomad
+rm -Rf ~/opt/nomad-development
+
+unset NOMAD_ADDR

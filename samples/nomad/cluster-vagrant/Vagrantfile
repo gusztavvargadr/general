@@ -1,0 +1,29 @@
+directory = File.dirname(__FILE__)
+
+load "#{directory}/../../../src/core.Vagrantfile"
+
+scripts_directory = "/vagrant"
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "gusztavvargadr/ubuntu-server-2204-lts"
+
+  config.vm.provision "shell", privileged: false, inline: "bash #{scripts_directory}/core/initialize.sh"
+
+  config.vm.define "bootstrap", autostart: false do |config|
+    config.vm.hostname = "bootstrap"
+
+    config.vm.provision "shell", privileged: false, inline: "bash #{scripts_directory}/bootstrap/apply.sh"
+  end
+
+  config.vm.define "server", autostart: false do |config|
+    config.vm.hostname = "server"
+
+    config.vm.provision "shell", privileged: false, inline: "bash #{scripts_directory}/server/apply.sh"
+  end
+
+  config.vm.define "client", autostart: false do |config|
+    config.vm.hostname = "client"
+
+    config.vm.provision "shell", privileged: false, inline: "bash #{scripts_directory}/client/apply.sh"
+  end
+end

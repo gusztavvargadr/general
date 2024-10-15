@@ -31,3 +31,6 @@ tls {
 acl {
   enabled = true
 }
+
+leave_on_terminate = true
+leave_on_interrupt = true

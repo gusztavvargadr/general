@@ -8,6 +8,10 @@ client {
   server_join {
     retry_join = {{ key "nomad/servers" }}
   }
+
+  drain_on_shutdown {
+    deadline = "1h"
+  }
 }
 
 tls {

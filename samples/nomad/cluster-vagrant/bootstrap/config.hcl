@@ -8,6 +8,14 @@ server {
   bootstrap_expect = 1
 }
 
+client {
+  enabled          = true
+
+  drain_on_shutdown {
+    deadline = "1h"
+  }
+}
+
 tls {
   http = true
   rpc  = true
@@ -28,3 +36,6 @@ tls {
 acl {
   enabled = true
 }
+
+leave_on_interrupt = true
+leave_on_terminate = true

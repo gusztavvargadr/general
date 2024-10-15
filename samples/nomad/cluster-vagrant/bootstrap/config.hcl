@@ -39,3 +39,8 @@ acl {
 
 leave_on_interrupt = true
 leave_on_terminate = true
+
+limits {
+  http_max_conns_per_client = 0
+  rpc_max_conns_per_client  = 0
+}

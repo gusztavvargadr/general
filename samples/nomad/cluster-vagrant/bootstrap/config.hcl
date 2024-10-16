@@ -10,10 +10,6 @@ server {
 
 client {
   enabled          = true
-
-  drain_on_shutdown {
-    deadline = "1h"
-  }
 }
 
 tls {
@@ -37,9 +33,6 @@ acl {
   enabled = true
 }
 
-leave_on_interrupt = true
-leave_on_terminate = true
-
 limits {
   http_max_conns_per_client = 0
   rpc_max_conns_per_client  = 0
@@ -47,4 +40,12 @@ limits {
 
 consul {
   auto_advertise = false
+}
+
+plugin "docker" {
+  config {
+    volumes {
+      enabled = true
+    }
+  }
 }

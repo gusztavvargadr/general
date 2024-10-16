@@ -7,3 +7,5 @@ sudo apt remove -y nomad
 sudo apt install -y git jq net-tools nomad=1.8.4-1
 sudo apt autoremove -y
 sudo apt clean -y
+
+sudo apt-mark hold nomad

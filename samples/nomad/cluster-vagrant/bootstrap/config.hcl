@@ -44,3 +44,7 @@ limits {
   http_max_conns_per_client = 0
   rpc_max_conns_per_client  = 0
 }
+
+consul {
+  auto_advertise = false
+}

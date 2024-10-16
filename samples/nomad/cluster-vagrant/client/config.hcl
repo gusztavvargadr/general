@@ -50,3 +50,7 @@ plugin "docker" {
     }
   }
 }
+
+consul {
+  auto_advertise = false
+}

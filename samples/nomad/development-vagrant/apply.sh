@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 
 cat <<EOF > /tmp/nomad.hcl
+plugin "docker" {
+  config {
+    volumes {
+      enabled = true
+    }
+  }
+}
 EOF
 
 nohup nomad agent -dev -config=/tmp/nomad.hcl > /tmp/nomad.log 2>&1 &

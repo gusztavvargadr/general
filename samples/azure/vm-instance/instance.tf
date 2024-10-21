@@ -1,15 +1,15 @@
 locals {
   instance_name = local.deployment_name
 
-  instance_size         = "Standard_B1s"
+  instance_size         = "Standard_B2ts_v2"
   instance_user         = "ubuntu"
   instance_disk_type    = "Premium_LRS"
-  instance_disk_size    = 127
+  instance_disk_size    = 31
   instance_disk_caching = "ReadWrite"
 
   instance_image_publisher = "Canonical"
-  instance_image_offer     = "0001-com-ubuntu-server-focal"
-  instance_image_sku       = "20_04-lts-gen2"
+  instance_image_offer     = "0001-com-ubuntu-server-jammy"
+  instance_image_sku       = "22_04-lts-gen2"
   instance_image_version   = "latest"
 }
 
@@ -62,7 +62,9 @@ resource "azurerm_linux_virtual_machine" "instance" {
     version   = local.instance_image_version
   }
 
-  size = local.instance_size
+  size            = local.instance_size
+  priority        = "Spot"
+  eviction_policy = "Delete"
 
   os_disk {
     storage_account_type = local.instance_disk_type
@@ -75,12 +77,13 @@ resource "azurerm_linux_virtual_machine" "instance" {
   ]
 
   admin_username = local.instance_user
-  # custom_data    = base64encode(file(local.core_instance_boot_filename))
 
   admin_ssh_key {
     username   = local.instance_user
     public_key = local.ssh_key_public
   }
+
+  custom_data = base64encode(file("${path.root}/user-data.sh"))
 }
 
 locals {

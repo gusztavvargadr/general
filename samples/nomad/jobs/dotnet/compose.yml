@@ -1,0 +1,6 @@
+services:
+  api:
+    image: dotnet-api:local
+    build:
+      context: .
+      dockerfile: ./src/api/Dockerfile
